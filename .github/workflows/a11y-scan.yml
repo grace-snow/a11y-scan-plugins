@@ -10,16 +10,16 @@ jobs:
       - uses: github/accessibility-scanner@v2
         with:
           # REQUIRED
+          # https://grace-snow.github.io/a11y-scan-plugins/docs/index.html
+          # https://grace-snow.github.io/a11y-scan-plugins/docs/forms.html
+          # https://grace-snow.github.io/a11y-scan-plugins/docs/images.html
+          # https://grace-snow.github.io/a11y-scan-plugins/docs/navigation.html
+          # https://grace-snow.github.io/a11y-scan-plugins/docs/color.html
+          # https://grace-snow.github.io/a11y-scan-plugins/docs/motion.html
+          # https://grace-snow.github.io/a11y-scan-plugins/docs/aria.html
+          # https://grace-snow.github.io/a11y-scan-plugins/pages/index.html
+          # https://grace-snow.github.io/a11y-scan-plugins/pages/accessible-name-utils-test.html
           urls: |
-            https://grace-snow.github.io/a11y-scan-plugins/docs/index.html
-            https://grace-snow.github.io/a11y-scan-plugins/docs/forms.html
-            https://grace-snow.github.io/a11y-scan-plugins/docs/images.html
-            https://grace-snow.github.io/a11y-scan-plugins/docs/navigation.html
-            https://grace-snow.github.io/a11y-scan-plugins/docs/color.html
-            https://grace-snow.github.io/a11y-scan-plugins/docs/motion.html
-            https://grace-snow.github.io/a11y-scan-plugins/docs/aria.html
-            https://grace-snow.github.io/a11y-scan-plugins/pages/index.html
-            https://grace-snow.github.io/a11y-scan-plugins/pages/accessible-name-utils-test.html
             https://grace-snow.github.io/a11y-scan-plugins/pages/aria-utils-test.html
             https://grace-snow.github.io/a11y-scan-plugins/pages/banner-test-broken.html
             https://grace-snow.github.io/a11y-scan-plugins/pages/banner-test.html
@@ -35,10 +35,10 @@ jobs:
           # OPTIONAL — set these to exercise more Action inputs
           skip_copilot_assignment: true
           include_screenshots: false
-          open_grouped_issues: false
+          open_grouped_issues: true
           reduced_motion: no-preference
           color_scheme: light
-          scans: '["axe","banner-scan", "form-label-in-name-scan", "label-in-name-scan", "nav-list-scan", "reflow-scan"]'
+          scans: '["banner-scan", "form-label-in-name-scan", "label-in-name-scan", "nav-list-scan"]'
 
           # OPTIONAL AUTH INPUTS (use only if your demo pages require login)
           # login_url: https://example.com/login
