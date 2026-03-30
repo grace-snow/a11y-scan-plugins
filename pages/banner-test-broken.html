@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banner component tests - broken implementation</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: #eeeeee;
+      color: #333333;
+    }
+    
+    h1 {
+      color: #333333;
+      margin-bottom: 2rem;
+    }
+    
+    .banner-section {
+      margin-bottom: 3rem;
+    }
+    
+    .banner-section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: #333333;
+    }
+    
+    .error-description {
+      background: rgba(248, 81, 73, 0.1);
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #830800;
+    }
+    
+    /* Banner styles */
+    .banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid;
+      margin-bottom: 1.5rem;
+    }
+    
+    .banner-critical {
+      background-color: rgba(248, 81, 73, 0.15);
+      border-color: #f85149;
+      color: #830800;
+    }
+    
+    .banner-info {
+      background-color: rgba(56, 139, 253, 0.15);
+      border-color: #388bfd;
+      color: #58a6ff;
+    }
+    
+    .banner-icon {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    
+    .banner-content {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .banner-heading {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 4px 0;
+    }
+    
+    .banner-description {
+      font-size: 14px;
+      margin: 0;
+      color: #333333;
+    }
+    
+    .banner-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .banner-button {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      /* Intentionally too small - under 24px */
+      min-width: 20px;
+      min-height: 20px;
+    }
+    
+    .banner-button-primary {
+      background-color: #238636;
+      color: #ffffff;
+    }
+    
+    .banner-dismiss {
+      background: transparent;
+      border: none;
+      color: currentColor;
+      cursor: pointer;
+      padding: 2px;
+      border-radius: 6px;
+      /* Intentionally too small */
+      min-width: 20px;
+      min-height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .banner-dismiss:hover {
+      background-color: rgba(177, 186, 196, 0.12);
+    }
+  </style>
+</head>
+<body>
+  <h1>Banner component tests - Broken implementation</h1>
+  <p>This page contains <strong>intentionally broken</strong> Banner components to verify that our accessibility tests will catch real issues.</p>
+  
+  <!-- Missing landmark role -->
+  <div class="banner-section">
+    <h2>Issue 1: Missing landmark role</h2>
+    <div class="error-description">
+      <strong>Should fail:</strong> Not using &lt;section role="region"&gt;
+    </div>
+    <div class="banner banner-critical" data-variant="critical" data-testid="banner">
+      <svg class="banner-icon" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M4.47.22A.749.749 0 0 1 5 0h6c.199 0 .389.079.53.22l4.25 4.25c.141.14.22.331.22.53v6a.749.749 0 0 1-.22.53l-4.25 4.25A.749.749 0 0 1 11 16H5a.749.749 0 0 1-.53-.22L.22 11.53A.749.749 0 0 1 0 11V5c0-.199.079-.389.22-.53Zm.84 1.28L1.5 5.31v5.38l3.81 3.81h5.38l3.81-3.81V5.31L10.69 1.5ZM8 4a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path>
+      </svg>
+      <div class="banner-content">
+        <h2 class="banner-heading">Critical</h2>
+        <p class="banner-description">This banner is not a landmark region.</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Missing landmark accessible name -->
+  <div class="banner-section">
+    <h2>Issue 2: Missing accessible name</h2>
+    <div class="error-description">
+      <strong>Should fail:</strong> Section landmark has no aria-label or aria-labelledby
+    </div>
+    <section role="region" class="banner banner-critical" data-variant="critical" data-testid="banner">
+      <svg class="banner-icon" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M4.47.22A.749.749 0 0 1 5 0h6c.199 0 .389.079.53.22l4.25 4.25c.141.14.22.331.22.53v6a.749.749 0 0 1-.22.53l-4.25 4.25A.749.749 0 0 1 11 16H5a.749.749 0 0 1-.53-.22L.22 11.53A.749.749 0 0 1 0 11V5c0-.199.079-.389.22-.53Zm.84 1.28L1.5 5.31v5.38l3.81 3.81h5.38l3.81-3.81V5.31L10.69 1.5ZM8 4a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path>
+      </svg>
+      <div class="banner-content">
+        <h2 class="banner-heading">Critical</h2>
+        <p class="banner-description">This landmark has no accessible name.</p>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Icon missing aria-hidden -->
+  <div class="banner-section">
+    <h2>Issue 3: Icon missing aria-hidden</h2>
+    <div class="error-description">
+      <strong>Should fail:</strong> Icon SVG should have aria-hidden="true"
+    </div>
+    <section role="region" aria-label="Critical" class="banner banner-critical" data-variant="critical" data-testid="banner">
+      <svg role="img" class="banner-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M4.47.22A.749.749 0 0 1 5 0h6c.199 0 .389.079.53.22l4.25 4.25c.141.14.22.331.22.53v6a.749.749 0 0 1-.22.53l-4.25 4.25A.749.749 0 0 1 11 16H5a.749.749 0 0 1-.53-.22L.22 11.53A.749.749 0 0 1 0 11V5c0-.199.079-.389.22-.53Zm.84 1.28L1.5 5.31v5.38l3.81 3.81h5.38l3.81-3.81V5.31L10.69 1.5ZM8 4a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path>
+      </svg>
+      <div class="banner-content">
+        <h2 class="banner-heading">Critical</h2>
+        <p class="banner-description">Icon is not marked as decorative.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Dismiss button with only "X" as accessible name -->
+  <!-- REMOVED until decision is made on whether we are checking name QUALITY or not (content) -->
+  <!-- <div class="banner-section">
+    <h2>Issue 5: Dismiss button with non-descriptive accessible name</h2>
+    <div class="error-description">
+      <strong>Should fail:</strong> Dismiss button aria-label is just "X"
+    </div>
+    <section role="region" aria-label="Info" class="banner banner-info" data-variant="info" data-testid="banner">
+      <svg class="banner-icon" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path>
+      </svg>
+      <div class="banner-content">
+        <h2 class="banner-heading">Info</h2>
+        <p class="banner-description">The dismiss button has a non-descriptive accessible name.</p>
+      </div>
+      <button class="banner-dismiss" aria-label="X">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"></path>
+        </svg>
+      </button>
+    </section>
+  </div> -->
+  <footer>
+    <a href="/pages">Back to home</a>
+  </footer>
+</body>
+</html>

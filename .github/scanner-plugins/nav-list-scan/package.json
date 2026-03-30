@@ -1,0 +1,6 @@
+{
+  "name": "nav-list-scan",
+  "description": "Validates GitHub NavList components follow accessibility patterns including navigation landmarks, valid list structure, and functional links with accessible names.",
+  "type": "module",
+  "version": "1.0.0"
+}

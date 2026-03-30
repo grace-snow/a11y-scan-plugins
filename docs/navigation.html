@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!-- ⚠️ INTENTIONAL FAILURE: missing lang attribute -->
+<html>
+<head>
+  <title>Blog — NovaTech</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ⚠️ INTENTIONAL FAILURE: focus outline removed globally — keyboard users cannot see where they are */
+    :focus { outline: none; }
+
+    .skip-link { position: absolute; top: -999px; left: 0; }
+    /* ⚠️ INTENTIONAL FAILURE: skip link is never made visible on focus */
+
+    .fake-link { color: #1a56db; text-decoration: underline; cursor: pointer; display: inline-block; }
+    .blog-meta { font-size: 0.85rem; color: #64748b; margin-bottom: 0.75rem; }
+    .blog-body p { margin-bottom: 1rem; line-height: 1.7; }
+    .sidebar { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; }
+    .sidebar h3 { font-size: 0.95rem; margin-bottom: 0.75rem; }
+    .sidebar ul { list-style: none; }
+    .sidebar ul li { padding: 0.4rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.875rem; }
+    .layout-grid { display: grid; grid-template-columns: 1fr 260px; gap: 2rem; }
+    @media (max-width: 700px) { .layout-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- ⚠️ INTENTIONAL FAILURE: skip link never becomes visible on focus (no :focus style) -->
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <div class="a11y-banner">
+    <span class="label">⚠ Page-Level Issues</span>
+    This page has several intentional failures:
+    <strong>missing <code>lang</code> attribute</strong>,
+    <strong>all focus outlines removed</strong> (keyboard users cannot see focused elements),
+    <strong>skip link permanently hidden</strong> (never reveals on focus),
+    <strong>no <code>&lt;nav&gt;</code> or <code>&lt;main&gt;</code> landmarks</strong>,
+    <strong>duplicate <code>&lt;h1&gt;</code></strong>, and
+    <strong>heading levels skipped</strong>.
+  </div>
+
+  <!-- ⚠️ INTENTIONAL FAILURE: navigation not wrapped in <nav> landmark -->
+  <div class="site-header">
+    <a href="index.html" class="site-logo">Nova<span>Tech</span></a>
+    <!-- ⚠️ INTENTIONAL FAILURE: nav links in plain <div>, not a <nav> element -->
+    <div style="display:flex; gap:1.25rem; font-size:0.9rem; font-weight:500;">
+      <a href="forms.html">Forms</a>
+      <a href="images.html">Images</a>
+      <a href="navigation.html">Navigation</a>
+      <a href="color.html">Color</a>
+      <a href="motion.html">Motion</a>
+      <a href="aria.html">ARIA</a>
+    </div>
+  </div>
+
+  <div class="page-title-bar">
+    <!-- ⚠️ INTENTIONAL FAILURE: two <h1> elements on one page -->
+    <h1>NovaTech Blog</h1>
+  </div>
+
+  <!-- ⚠️ INTENTIONAL FAILURE: no <main> landmark wrapping the main content -->
+  <div class="page-wrapper">
+    <a href="index.html" class="back-link">← Back to index</a>
+
+    <div class="layout-grid">
+      <div>
+
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Focus Outline Removed</span>
+          <p>The CSS rule <code>:focus { outline: none; }</code> removes the visible focus indicator for all interactive elements sitewide. Keyboard and switch-access users rely on the focus outline to know where they are on a page. Removing it is a WCAG 2.4.7 (Focus Visible) failure. <strong>Fix:</strong> never remove focus outlines globally — instead, style them to match your design using <code>:focus-visible</code>.</p>
+        </div>
+
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Skip Link Always Hidden</span>
+          <p>A "Skip to main content" link exists in the HTML but uses <code>position: absolute; top: -999px</code> without a matching <code>:focus</code> style to bring it into view. Keyboard users who Tab to it can't see or use it, defeating its purpose. <strong>Fix:</strong> add <code>.skip-link:focus { top: 0; }</code> so the link appears when focused.</p>
+        </div>
+
+        <!-- Article -->
+        <!-- ⚠️ INTENTIONAL FAILURE: heading hierarchy jumps from h1 to h4 -->
+        <h1>How NovaTech Scaled to 10,000 Customers</h1>
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Duplicate &lt;h1&gt; on Page</span>
+          <p>There are now two <code>&lt;h1&gt;</code> elements on this page (the page banner and this article title). A page should have exactly one <code>&lt;h1&gt;</code> representing the primary topic. Multiple <code>&lt;h1&gt;</code> elements confuse screen reader heading navigation. <strong>Fix:</strong> make the article title an <code>&lt;h2&gt;</code>.</p>
+        </div>
+
+        <p class="blog-meta">📅 March 5, 2025 · ✍️ Jordan Ellis · ☁️ Growth</p>
+
+        <h4>The Early Days</h4>
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Heading Jumps from h1 to h4</span>
+          <p>After the <code>&lt;h1&gt;</code> article title, the next heading jumps to <code>&lt;h4&gt;</code>, skipping <code>&lt;h2&gt;</code> and <code>&lt;h3&gt;</code>. Screen reader users navigating by heading levels will find an inconsistent outline that is hard to follow. <strong>Fix:</strong> use <code>&lt;h2&gt;</code> for top-level article sections.</p>
+        </div>
+
+        <div class="blog-body">
+          <p>When we founded NovaTech in 2012, our entire engineering team fit in a single co-working space. We had one product, one pricing tier, and three customers. Fast forward to today: 10,000+ customers, 250 employees, and offices on four continents.</p>
+
+          <!-- ⚠️ INTENTIONAL FAILURE: heading used for visual styling only, not semantic structure -->
+          <h2 style="font-size: 0.85rem; font-weight: normal; color: #64748b; font-style: italic;">"Our biggest challenge was staying true to our product vision while growing fast."</h2>
+          <div class="a11y-note">
+            <span class="label">❌ Issue: Heading Used for Visual Styling Only</span>
+            <p>The pull-quote above uses an <code>&lt;h2&gt;</code> purely for its visual appearance, then overrides its styling with CSS. This pollutes the heading outline — screen reader users will hear it announced as a major section heading when it is just a styled quote. <strong>Fix:</strong> use a <code>&lt;blockquote&gt;</code> or a <code>&lt;p&gt;</code> with CSS styling instead.</p>
+          </div>
+
+          <p>Our growth came from listening relentlessly to customers and shipping fast. We learned that reliability and simplicity matter more than feature bloat.</p>
+        </div>
+
+        <h4>Keyboard &amp; Focus Demo</h4>
+
+        <!-- ⚠️ INTENTIONAL FAILURE: interactive element using <div>, no tabindex, no keyboard handler -->
+        <div class="fake-link" onclick="alert('Button clicked!')">
+          ▶ Watch the founder story (not keyboard accessible)
+        </div>
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Interactive Element Not Keyboard Accessible</span>
+          <p>This "button" is a <code>&lt;div&gt;</code> with an <code>onclick</code> handler. It is not reachable by Tab key, cannot be activated with Enter/Space, and announces nothing meaningful to screen readers. <strong>Fix:</strong> use a real <code>&lt;button&gt;</code> element, or add <code>tabindex="0"</code>, <code>role="button"</code>, and keyboard event handlers.</p>
+        </div>
+
+        <!-- ⚠️ INTENTIONAL FAILURE: positive tabindex values disrupt natural tab order -->
+        <p style="margin-top:1rem; font-size:0.875rem; color:#64748b;">Tab between these links — the order will be wrong:</p>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:0.5rem;">
+          <a href="forms.html" tabindex="5">Forms (tabindex=5)</a>
+          <a href="images.html" tabindex="1">Images (tabindex=1)</a>
+          <a href="color.html"  tabindex="3">Color (tabindex=3)</a>
+        </div>
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Positive tabindex Disrupts Tab Order</span>
+          <p>Using <code>tabindex="1"</code>, <code>tabindex="3"</code>, and <code>tabindex="5"</code> forces these links to be reached before any other focusable element on the page, and in a non-visual order. This breaks the natural, predictable Tab flow. <strong>Fix:</strong> remove all positive <code>tabindex</code> values. Only use <code>tabindex="0"</code> (to make non-interactive elements focusable) or <code>tabindex="-1"</code> (to manage focus programmatically).</p>
+        </div>
+
+        <!-- ⚠️ INTENTIONAL FAILURE: dialog element with no focus management or accessible name -->
+        <div role="dialog" style="border:1px solid #cbd5e1; padding:1.25rem; border-radius:8px; background:#fff; margin-top:0.5rem;">
+          <p style="font-weight:600; margin-bottom:0.5rem;">Subscribe to our newsletter</p>
+          <p style="font-size:0.875rem; margin-bottom:1rem;">Enter your email to get weekly updates from NovaTech.</p>
+          <input type="email" placeholder="your@email.com" style="padding:0.45rem 0.75rem;border:1px solid #cbd5e1;border-radius:6px;width:100%;margin-bottom:0.75rem;" />
+          <button style="background:#1a56db;color:#fff;border:none;padding:0.5rem 1.25rem;border-radius:6px;cursor:pointer;">Subscribe</button>
+          <button style="margin-left:0.5rem;background:#fff;border:1px solid #cbd5e1;padding:0.5rem 1.25rem;border-radius:6px;cursor:pointer;">Close</button>
+        </div>
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Dialog Has No Focus Management or Accessible Name</span>
+          <p>This element has <code>role="dialog"</code> but: (1) focus is never moved into it when it "opens," (2) it has no <code>aria-label</code> or <code>aria-labelledby</code> to announce its title, and (3) focus can escape freely without being trapped inside. <strong>Fix:</strong> use a real <code>&lt;dialog&gt;</code> element, set focus to the first interactive element inside it on open, add <code>aria-labelledby</code> pointing to the dialog title, and implement a focus trap.</p>
+        </div>
+
+        <div class="a11y-note">
+          <span class="label">❌ Issue: No &lt;main&gt; Landmark</span>
+          <p>This page's primary content is wrapped in a <code>&lt;div&gt;</code> instead of a <code>&lt;main&gt;</code> element. Screen reader users can jump directly to main content using landmark shortcuts, but only if the page uses <code>&lt;main&gt;</code>. <strong>Fix:</strong> replace the outer <code>&lt;div class="page-wrapper"&gt;</code> with <code>&lt;main class="page-wrapper"&gt;</code>.</p>
+        </div>
+
+      </div>
+
+      <!-- Sidebar -->
+      <aside>
+        <div class="sidebar">
+          <h3>Recent Articles</h3>
+          <ul>
+            <li><a href="#">Scaling from 0 to 10k customers</a></li>
+            <li><a href="#">Zero-trust security in 2025</a></li>
+            <li><a href="#">Why we rewrote our data pipeline</a></li>
+            <li><a href="#">Building an accessible design system</a></li>
+          </ul>
+        </div>
+        <div class="sidebar" style="margin-top:1rem;">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="#">Growth</a></li>
+            <li><a href="#">Engineering</a></li>
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Design</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2025 NovaTech · <a href="index.html">Home</a> · <a href="https://www.w3.org/WAI/WCAG22/quickref/" target="_blank" rel="noopener">WCAG 2.2 Reference</a></p>
+    <p style="margin-top:0.4rem; font-size:0.8rem;">These pages are intentionally inaccessible — for accessibility testing purposes only.</p>
+  </footer>
+
+</body>
+</html>

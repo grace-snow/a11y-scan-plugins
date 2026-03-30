@@ -1,0 +1,47 @@
+name: Accessibility Scanner (Demo)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  accessibility_scanner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: github/accessibility-scanner@v2
+        with:
+          # REQUIRED
+          urls: |
+            https://grace-snow.github.io/a11y-scan-plugins/docs/index.html
+            https://grace-snow.github.io/a11y-scan-plugins/docs/forms.html
+            https://grace-snow.github.io/a11y-scan-plugins/docs/images.html
+            https://grace-snow.github.io/a11y-scan-plugins/docs/navigation.html
+            https://grace-snow.github.io/a11y-scan-plugins/docs/color.html
+            https://grace-snow.github.io/a11y-scan-plugins/docs/motion.html
+            https://grace-snow.github.io/a11y-scan-plugins/docs/aria.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/index.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/accessible-name-utils-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/aria-utils-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/banner-test-broken.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/banner-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/img-utils-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/interaction-utils-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/link-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/reforge-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/structure-utils-test.html
+          repository: grace-snow/a11y-scan-plugins
+          token: ${{ secrets.A11Y_SCAN }}
+          cache_key: cached_results-primer.style-main.json
+
+          # OPTIONAL — set these to exercise more Action inputs
+          skip_copilot_assignment: true
+          include_screenshots: false
+          open_grouped_issues: false
+          reduced_motion: no-preference
+          color_scheme: light
+          scans: '["axe","banner-scan", "form-label-in-name-scan", "label-in-name-scan", "nav-list-scan", "reflow-scan"]'
+
+          # OPTIONAL AUTH INPUTS (use only if your demo pages require login)
+          # login_url: https://example.com/login
+          # username: demo-user
+          # password: ${{ secrets.DEMO_PASSWORD }}
+          # auth_context: '{"username":"demo-user","password":"***","cookies":[]}'

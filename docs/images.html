@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<!-- ⚠️ INTENTIONAL FAILURE: missing lang attribute -->
+<html>
+<head>
+  <title>Our Team — NovaTech</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .team-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:1.25rem; margin-bottom:0.5rem; }
+    .team-card img { width:100%; height:200px; object-fit:cover; display:block; }
+    .team-card-body { padding:1rem; }
+    .team-card-body h3 { font-size:0.95rem; margin-bottom:0.15rem; }
+    .team-card-body p  { font-size:0.82rem; color:#64748b; }
+    .article-img { width:100%; max-height:320px; object-fit:cover; border-radius:8px; margin-bottom:0.5rem; }
+    figure { margin:0 0 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="site-logo">Nova<span>Tech</span></a>
+    <nav>
+      <ul class="header-nav">
+        <li><a href="forms.html">Forms</a></li>
+        <li><a href="images.html">Images</a></li>
+        <li><a href="navigation.html">Navigation</a></li>
+        <li><a href="color.html">Color</a></li>
+        <li><a href="motion.html">Motion</a></li>
+        <li><a href="aria.html">ARIA</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-title-bar">
+    <h1>Our Team &amp; Products</h1>
+    <p>Meet the people behind NovaTech and explore our product showcase.</p>
+  </div>
+
+  <main class="page-wrapper">
+    <a href="index.html" class="back-link">← Back to index</a>
+
+    <!-- ───────────────────────────────────────────────────── -->
+    <h2 style="margin-bottom:1rem;">Meet the Team</h2>
+
+    <!-- ⚠️ INTENTIONAL FAILURE: img with no alt attribute -->
+    <div class="team-grid">
+      <div class="team-card card" style="padding:0;">
+        <img src="https://i.pravatar.cc/400?img=33" />
+        <div class="team-card-body">
+          <h3>Jordan Ellis</h3>
+          <p>Chief Executive Officer</p>
+        </div>
+      </div>
+      <div class="team-card card" style="padding:0;">
+        <!-- ⚠️ INTENTIONAL FAILURE: img with empty alt="" but used as informative (shows the person) -->
+        <img src="https://i.pravatar.cc/400?img=12" alt="" />
+        <div class="team-card-body">
+          <h3>Morgan Reyes</h3>
+          <p>Head of Engineering</p>
+        </div>
+      </div>
+      <div class="team-card card" style="padding:0;">
+        <!-- ⚠️ INTENTIONAL FAILURE: meaningless filename-style alt text -->
+        <img src="https://i.pravatar.cc/400?img=47" alt="IMG_4823.jpg" />
+        <div class="team-card-body">
+          <h3>Casey Nguyen</h3>
+          <p>Director of Design</p>
+        </div>
+      </div>
+      <div class="team-card card" style="padding:0;">
+        <!-- ⚠️ INTENTIONAL FAILURE: redundant alt text starting with "Image of" -->
+        <img src="https://i.pravatar.cc/400?img=59" alt="Image of a person smiling" />
+        <div class="team-card-body">
+          <h3>Alex Hoffman</h3>
+          <p>VP of Sales</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="a11y-note">
+      <span class="label">❌ Issue: Four Different Image Alt Text Problems Above</span>
+      <p>
+        <strong>Card 1 (Jordan Ellis):</strong> The <code>&lt;img&gt;</code> has <strong>no <code>alt</code> attribute</strong>. Screen readers may announce the image URL instead.<br />
+        <strong>Card 2 (Morgan Reyes):</strong> <code>alt=""</code> marks the image as decorative, but this is an informative headshot — it should describe the person.<br />
+        <strong>Card 3 (Casey Nguyen):</strong> <code>alt="IMG_4823.jpg"</code> is a filename, not a description. It conveys nothing meaningful.<br />
+        <strong>Card 4 (Alex Hoffman):</strong> <code>alt="Image of a person smiling"</code> — the phrase "Image of" is redundant; screen readers already announce "image." It also lacks the person's name.<br />
+        <strong>Fix for all:</strong> use the person's name and role, e.g. <code>alt="Alex Hoffman, VP of Sales"</code>.
+      </p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- ⚠️ INTENTIONAL FAILURE: linked image with no accessible name -->
+    <h2 style="margin-bottom:1rem;">Featured Blog Post</h2>
+    <a href="index.html">
+      <img src="https://picsum.photos/seed/blog-hero/900/350" alt="" class="article-img" />
+    </a>
+    <div class="a11y-note">
+      <span class="label">❌ Issue: Linked Image Has No Accessible Name</span>
+      <p>The blog post banner is wrapped in an <code>&lt;a&gt;</code> link, but the image inside has <code>alt=""</code>. When an image is the only content of a link, its <code>alt</code> becomes the link's accessible name. An empty <code>alt</code> means screen readers announce the link with no label — users don't know where it goes. <strong>Fix:</strong> describe the link destination, e.g. <code>alt="Read our latest blog post: 2025 Cloud Trends"</code>.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- ⚠️ INTENTIONAL FAILURE: decorative image has descriptive alt (should be empty) -->
+    <h2 style="margin-bottom:0.75rem;">About NovaTech</h2>
+    <p style="margin-bottom:1rem;">Founded in 2012, NovaTech has grown from a two-person startup to a global enterprise with offices in 12 countries.</p>
+    <img src="https://picsum.photos/seed/divider-bar/960/12" alt="decorative horizontal divider banner graphic with geometric pattern" role="img" style="margin-bottom:0.5rem;" />
+    <div class="a11y-note">
+      <span class="label">❌ Issue: Decorative Image Has Unnecessary Alt Text</span>
+      <p>The thin divider image above is purely decorative. Giving it descriptive alt text forces screen readers to announce "decorative horizontal divider banner graphic with geometric pattern" — adding noise without value. <strong>Fix:</strong> use <code>alt=""</code> (empty string) on decorative images so assistive technologies skip them entirely.</p>
+    </div>
+
+    <!-- ⚠️ INTENTIONAL FAILURE: figure with no figcaption, image has no alt -->
+    <figure>
+      <img src="https://picsum.photos/seed/office/900/400" style="width:100%; border-radius:8px;" />
+    </figure>
+    <div class="a11y-note">
+      <span class="label">❌ Issue: Figure Has No figcaption and Image Has No Alt</span>
+      <p>This <code>&lt;figure&gt;</code> element contains an image with no <code>alt</code> attribute and no <code>&lt;figcaption&gt;</code>. The <code>&lt;figure&gt;</code> element is meant to associate an image with its caption. Without a caption and without alt text, screen reader users receive no information about this image. <strong>Fix:</strong> add <code>alt="NovaTech headquarters lobby"</code> and a descriptive <code>&lt;figcaption&gt;</code>.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- ⚠️ INTENTIONAL FAILURE: CSS background image used for informative content -->
+    <h2 style="margin-bottom:0.75rem;">Q1 Performance Highlights</h2>
+    <div style="background-image: url('https://picsum.photos/seed/chart/900/300'); background-size:cover; background-position:center; width:100%; height:220px; border-radius:8px; display:flex; align-items:flex-end; padding:1rem; margin-bottom:0.5rem;">
+      <span style="background:rgba(0,0,0,0.6); color:#fff; padding:0.4rem 0.75rem; border-radius:4px; font-size:0.875rem;">Revenue grew 42% YoY · New customers up 31% · NPS score: 74</span>
+    </div>
+    <div class="a11y-note">
+      <span class="label">❌ Issue: Informative Content in CSS Background Image</span>
+      <p>The chart/graphic above is applied as a CSS <code>background-image</code>. Background images are invisible to screen readers and cannot have <code>alt</code> text. Any information the image conveys is completely inaccessible. <strong>Fix:</strong> use an <code>&lt;img&gt;</code> element with descriptive <code>alt</code> text, or provide the same information as visible text alongside the visual.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- ⚠️ INTENTIONAL FAILURE: SVG with no title or aria-label -->
+    <h2 style="margin-bottom:0.75rem;">Company Logo</h2>
+    <svg width="120" height="120" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:0.5rem; display:block;">
+      <circle cx="60" cy="60" r="50" fill="#1a56db" />
+      <text x="60" y="68" text-anchor="middle" fill="white" font-size="28" font-family="system-ui, sans-serif" font-weight="bold">AC</text>
+    </svg>
+    <div class="a11y-note">
+      <span class="label">❌ Issue: SVG Has No Accessible Name</span>
+      <p>This inline SVG (the company logo) has no <code>&lt;title&gt;</code> element, no <code>aria-label</code>, and no <code>role</code>. Screen readers either skip it or announce unhelpful generic text. <strong>Fix:</strong> add <code>role="img" aria-label="NovaTech logo"</code>, or add a <code>&lt;title&gt;NovaTech logo&lt;/title&gt;</code> as the first child of the <code>&lt;svg&gt;</code>.</p>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 NovaTech · <a href="index.html">Home</a> · <a href="https://www.w3.org/WAI/WCAG22/quickref/" target="_blank" rel="noopener">WCAG 2.2 Reference</a></p>
+    <p style="margin-top:0.4rem; font-size:0.8rem;">These pages are intentionally inaccessible — for accessibility testing purposes only.</p>
+  </footer>
+
+</body>
+</html>

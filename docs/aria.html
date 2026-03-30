@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<!-- ⚠️ INTENTIONAL FAILURE: missing lang attribute -->
+<html>
+<head>
+  <title>Account Settings — NovaTech</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    [role="button"] { display: inline-block; padding: 0.5rem 1.25rem; border: 1px solid #cbd5e1; background: #fff; border-radius: 6px; cursor: pointer; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    .settings-section { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:1.5rem; margin-bottom:1.5rem; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+    .settings-row { display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid #f1f5f9; gap:1rem; }
+    .settings-row:last-child { border-bottom:none; padding-bottom:0; }
+    .settings-label { font-size:0.875rem; font-weight:600; }
+    .settings-desc { font-size:0.8rem; color:#64748b; margin-top:0.15rem; }
+    .listbox-item { padding: 0.5rem 0.75rem; font-size: 0.9rem; }
+    .listbox-item:hover { background: #f1f5f9; }
+    .notification-bar { background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px; padding:0.75rem 1rem; font-size:0.875rem; margin-bottom:0.5rem; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="site-logo">Nova<span>Tech</span></a>
+    <nav>
+      <ul class="header-nav">
+        <li><a href="forms.html">Forms</a></li>
+        <li><a href="images.html">Images</a></li>
+        <li><a href="navigation.html">Navigation</a></li>
+        <li><a href="color.html">Color</a></li>
+        <li><a href="motion.html">Motion</a></li>
+        <li><a href="aria.html">ARIA</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-title-bar">
+    <h1>Account Settings</h1>
+    <p>Manage your profile, preferences, and notification settings.</p>
+  </div>
+
+  <main class="page-wrapper">
+    <a href="index.html" class="back-link">← Back to index</a>
+
+    <!-- ───────────────────────────────────────────────────── -->
+    <div class="settings-section">
+      <h2 style="margin-bottom:1.25rem;">Profile Actions</h2>
+
+      <!-- ⚠️ INTENTIONAL FAILURE: role="button" on <div> but no tabindex or keyboard handler -->
+      <div role="button" onclick="alert('Clicked!')">Edit Profile</div>
+      <div class="a11y-note">
+        <span class="label">❌ Issue: role="button" Without Keyboard Support or tabindex</span>
+        <p>This "Edit Profile" element uses <code>role="button"</code> on a <code>&lt;div&gt;</code>, but has no <code>tabindex="0"</code> (so it's unreachable by Tab) and no keyboard event handler (Enter/Space won't trigger it). Screen readers will announce "Edit Profile, button" but users cannot activate it without a mouse. <strong>Fix:</strong> use a real <code>&lt;button&gt;</code> element, or add <code>tabindex="0"</code> and <code>onkeydown</code> handlers for Enter/Space.</p>
+      </div>
+
+      <!-- ⚠️ INTENTIONAL FAILURE: aria-label overrides the visible button text with a wrong/misleading value -->
+      <button aria-label="Delete account permanently" style="background:#1a56db;color:#fff;border:none;padding:0.5rem 1.25rem;border-radius:6px;cursor:pointer;margin-bottom:0.5rem;">Save Changes</button>
+      <div class="a11y-note">
+        <span class="label">❌ Issue: aria-label Overrides Visible Button Text with Wrong Value</span>
+        <p>The button visually says "Save Changes" but its <code>aria-label="Delete account permanently"</code> overrides that label for screen reader users. They hear "Delete account permanently, button" — a completely different, alarming action. This violates WCAG 2.5.3 (Label in Name). <strong>Fix:</strong> remove the <code>aria-label</code> entirely (let the visible text serve as the accessible name), or ensure <code>aria-label</code> contains the visible text.</p>
+      </div>
+    </div>
+
+    <!-- ───────────────────────────────────────────────────── -->
+    <div class="settings-section">
+      <h2 style="margin-bottom:1.25rem;">Profile Details</h2>
+
+      <!-- ⚠️ INTENTIONAL FAILURE: aria-labelledby points to a non-existent ID -->
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">Display Name</div>
+          <div class="settings-desc">Shown on your public profile and comments.</div>
+        </div>
+        <input type="text" aria-labelledby="ghost-label" placeholder="Jordan Ellis" style="padding:0.5rem 0.75rem;border:1px solid #cbd5e1;border-radius:6px;font-size:0.9rem;width:220px;" />
+      </div>
+      <div class="a11y-note">
+        <span class="label">❌ Issue: aria-labelledby References a Non-Existent ID</span>
+        <p>The Display Name input has <code>aria-labelledby="ghost-label"</code>, but no element with <code>id="ghost-label"</code> exists on the page. Screen readers will fall back to an empty label, leaving the input unlabeled. <strong>Fix:</strong> use a real <code>&lt;label for="display-name"&gt;</code> linked via matching <code>id="display-name"</code>, or reference an existing element ID in <code>aria-labelledby</code>.</p>
+      </div>
+
+      <!-- ⚠️ INTENTIONAL FAILURE: aria-hidden="true" on a focusable element -->
+      <div class="settings-row" style="margin-top:0.5rem;">
+        <div>
+          <div class="settings-label">Help Center</div>
+          <div class="settings-desc">Open support documentation.</div>
+        </div>
+        <a href="index.html" aria-hidden="true" style="color:#1a56db;font-size:0.9rem;">Open Help Center →</a>
+      </div>
+      <div class="a11y-note">
+        <span class="label">❌ Issue: aria-hidden="true" on a Focusable Element</span>
+        <p>The "Open Help Center" link has <code>aria-hidden="true"</code>, which hides it from assistive technologies. But the link is still in the DOM and reachable by Tab. This creates a "ghost focus" — keyboard users tab to an element that screen readers completely ignore, leaving them disoriented. <strong>Fix:</strong> either remove <code>aria-hidden</code>, or also add <code>tabindex="-1"</code> to remove it from the tab order.</p>
+      </div>
+    </div>
+
+    <!-- ───────────────────────────────────────────────────── -->
+    <div class="settings-section">
+      <h2 style="margin-bottom:1.25rem;">Notification Preferences</h2>
+
+      <!-- ⚠️ INTENTIONAL FAILURE: invalid ARIA role value -->
+      <div role="textbox-field" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:0.75rem; margin-bottom:0.5rem; font-size:0.875rem; color:#64748b;">
+        Notification summary: 3 new alerts since your last login.
+      </div>
+      <div class="a11y-note">
+        <span class="label">❌ Issue: Invalid ARIA role Value</span>
+        <p>The notification summary box uses <code>role="textbox-field"</code>, which is not a valid ARIA role. Browsers and screen readers will ignore it. Using invalid roles provides no accessible semantics. <strong>Fix:</strong> use a valid role such as <code>role="status"</code> for live region content, or omit the <code>role</code> attribute if no specific semantic is needed.</p>
+      </div>
+
+      <!-- ⚠️ INTENTIONAL FAILURE: listbox missing required aria-label -->
+      <p style="font-size:0.875rem; font-weight:600; margin-bottom:0.5rem;">Notification frequency:</p>
+      <ul role="listbox" style="border:1px solid #cbd5e1; border-radius:6px; list-style:none; padding:0; background:#fff; margin-bottom:0.5rem; overflow:hidden;">
+        <li role="option" class="listbox-item">Immediately</li>
+        <li role="option" class="listbox-item">Hourly digest</li>
+        <li role="option" class="listbox-item">Daily digest</li>
+        <li role="option" class="listbox-item">Weekly digest</li>
+      </ul>
+      <div class="a11y-note">
+        <span class="label">❌ Issue: Listbox Missing Required aria-label</span>
+        <p>The <code>role="listbox"</code> element has no accessible name (<code>aria-label</code> or <code>aria-labelledby</code>). Screen readers will announce "listbox" with no context about what you're choosing. The ARIA spec requires listboxes to have an accessible name. <strong>Fix:</strong> add <code>aria-label="Notification frequency"</code>, or use <code>aria-labelledby</code> pointing to the visible "Notification frequency" label above.</p>
+      </div>
+
+      <!-- ⚠️ INTENTIONAL FAILURE: aria-expanded state never updated on toggle -->
+      <button aria-expanded="false" aria-controls="advanced-panel" style="background:#fff;border:1px solid #cbd5e1;padding:0.5rem 1.25rem;border-radius:6px;font-size:0.9rem;cursor:pointer;margin-bottom:0.5rem;">
+        ▼ Advanced notification settings
+      </button>
+      <div id="advanced-panel" style="border:1px solid #e2e8f0; border-radius:6px; padding:1rem; background:#f8fafc; margin-bottom:0.5rem;">
+        <p style="font-size:0.875rem; margin-bottom:0.75rem;">Choose which events trigger notifications:</p>
+        <label style="display:block;font-size:0.875rem;margin-bottom:0.4rem;"><input type="checkbox" checked /> New login from unrecognized device</label>
+        <label style="display:block;font-size:0.875rem;margin-bottom:0.4rem;"><input type="checkbox" /> API rate limit exceeded</label>
+        <label style="display:block;font-size:0.875rem;"><input type="checkbox" checked /> Monthly usage report</label>
+      </div>
+      <div class="a11y-note">
+        <span class="label">❌ Issue: aria-expanded State Never Updated</span>
+        <p>The "Advanced notification settings" button has <code>aria-expanded="false"</code>, but clicking it doesn't change this value. Screen readers announce "collapsed" even after the panel is shown. Users relying on ARIA state to understand UI state receive incorrect information. <strong>Fix:</strong> toggle <code>aria-expanded</code> to <code>"true"</code> when the panel is shown and back to <code>"false"</code> when hidden.</p>
+      </div>
+    </div>
+
+    <!-- ───────────────────────────────────────────────────── -->
+    <div class="settings-section">
+      <h2 style="margin-bottom:1.25rem;">System Notifications</h2>
+
+      <!-- ⚠️ INTENTIONAL FAILURE: assertive live region used for non-urgent content -->
+      <div role="status" aria-live="assertive" aria-atomic="true" class="notification-bar">
+        ✅ Settings auto-saved at 14:32:07 UTC
+      </div>
+      <div class="a11y-note">
+        <span class="label">❌ Issue: assertive Live Region for Non-Urgent Content</span>
+        <p><code>aria-live="assertive"</code> interrupts screen readers immediately, cutting off whatever they are currently reading. This is appropriate only for critical errors or urgent alerts. An "auto-saved" confirmation is non-urgent. <strong>Fix:</strong> use <code>aria-live="polite"</code> so the announcement waits for the user to finish reading their current content.</p>
+      </div>
+
+      <!-- ⚠️ INTENTIONAL FAILURE: visually hidden text contradicts visible button text -->
+      <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+        <button style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:0.5rem 0.75rem;cursor:pointer;font-size:1.1rem;">
+          <span aria-hidden="true">✕</span>
+          <span class="visually-hidden">Open notifications panel</span>
+        </button>
+        <span style="font-size:0.875rem; color:#64748b;">Dismiss all notifications</span>
+      </div>
+      <div class="a11y-note">
+        <span class="label">❌ Issue: Visually Hidden Text Contradicts the Visual Button</span>
+        <p>The button shows "✕" (a close/dismiss icon) visually, but the screen-reader-only text says "Open notifications panel." These are opposite actions. The <code>aria-hidden="true"</code> hides the visual icon from screen readers, so they only hear "Open notifications panel, button" — completely misleading for a dismiss action. <strong>Fix:</strong> align the hidden text with the visual intent, e.g. <code>Dismiss all notifications</code>.</p>
+      </div>
+    </div>
+
+    <!-- ───────────────────────────────────────────────────── -->
+    <div class="settings-section">
+      <h2 style="margin-bottom:1.25rem;">Account Security</h2>
+
+      <!-- ⚠️ INTENTIONAL FAILURE: role="img" on non-img element without accessible name -->
+      <div role="img" style="width:80px; height:80px; background: linear-gradient(135deg,#1a56db,#7c3aed); border-radius:50%; margin-bottom:0.5rem;"></div>
+      <div class="a11y-note">
+        <span class="label">❌ Issue: role="img" on Non-Image Element Without Accessible Name</span>
+        <p>This <code>&lt;div&gt;</code> has <code>role="img"</code> to convey it is an image (a profile avatar), but has no <code>aria-label</code> or <code>aria-labelledby</code>. Screen readers will announce "image" with no description — equivalent to a missing <code>alt</code>. <strong>Fix:</strong> add <code>aria-label="Jordan Ellis's avatar"</code>, or use an actual <code>&lt;img&gt;</code> with an <code>alt</code> attribute.</p>
+      </div>
+
+      <!-- ⚠️ INTENTIONAL FAILURE: duplicate IDs break aria-labelledby -->
+      <div class="settings-row">
+        <label id="dup-id" class="settings-label">Username</label>
+        <input type="text" aria-labelledby="dup-id" placeholder="jordan.ellis" style="padding:0.5rem 0.75rem;border:1px solid #cbd5e1;border-radius:6px;font-size:0.9rem;width:220px;" />
+      </div>
+      <div class="settings-row" style="margin-top:0.5rem;">
+        <label id="dup-id" class="settings-label">Password</label>
+        <input type="password" aria-labelledby="dup-id" placeholder="••••••••" style="padding:0.5rem 0.75rem;border:1px solid #cbd5e1;border-radius:6px;font-size:0.9rem;width:220px;" />
+      </div>
+      <div class="a11y-note">
+        <span class="label">❌ Issue: Duplicate IDs Break aria-labelledby</span>
+        <p>Both the "Username" and "Password" labels share <code>id="dup-id"</code>. When <code>aria-labelledby="dup-id"</code> is used on each input, browsers use the first matching element — so both inputs are labeled "Username." The Password field's label is completely broken. IDs must be unique per page. <strong>Fix:</strong> use distinct IDs such as <code>id="username-label"</code> and <code>id="password-label"</code>.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 NovaTech · <a href="index.html">Home</a> · <a href="https://www.w3.org/WAI/WCAG22/quickref/" target="_blank" rel="noopener">WCAG 2.2 Reference</a></p>
+    <p style="margin-top:0.4rem; font-size:0.8rem;">These pages are intentionally inaccessible — for accessibility testing purposes only.</p>
+  </footer>
+
+</body>
+</html>

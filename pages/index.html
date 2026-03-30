@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>Playwright tests for the accessibility scanner</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: #eeeeee;
+      color: #333333;
+    }
+
+    h1 {
+      color: #333333;
+      margin-bottom: 2rem;
+    }
+
+    .banner-section {
+      margin-bottom: 3rem;
+    }
+
+    .banner-section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: #333333;
+    }
+
+    /* Banner styles */
+    .banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid;
+      margin-bottom: 1.5rem;
+    }
+
+    .banner-critical {
+      background-color: rgba(248, 81, 73, 0.15);
+      border-color: #f85149;
+      color: #830800;
+    }
+
+    .banner-info {
+      background-color: rgba(56, 139, 253, 0.15);
+      border-color: #388bfd;
+      color: #58a6ff;
+    }
+
+    .banner-success {
+      background-color: rgba(46, 160, 67, 0.15);
+      border-color: #2ea043;
+      color: #3fb950;
+    }
+
+    .banner-warning {
+      background-color: rgba(187, 128, 9, 0.15);
+      border-color: #bb8009;
+      color: #d29922;
+    }
+
+    .banner-icon {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .banner-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .banner-heading {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 4px 0;
+    }
+
+    .banner-description {
+      font-size: 14px;
+      margin: 0;
+      color: #333333;
+    }
+
+    .banner-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .banner-button {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      min-width: 24px;
+      min-height: 24px;
+    }
+
+    .banner-button-primary {
+      background-color: #238636;
+      color: #ffffff;
+    }
+
+    .banner-button-secondary {
+      background-color: #21262d;
+      color: #333333;
+      border: 1px solid #30363d;
+    }
+
+    .banner-dismiss {
+      background: transparent;
+      border: none;
+      color: currentColor;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 6px;
+      min-width: 24px;
+      min-height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .banner-dismiss:hover {
+      background-color: rgba(177, 186, 196, 0.12);
+    }
+
+    /* Visually hidden class */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Playwright tests for the accessibility scanner</h1>
+  <nav>
+    <h2>My test pages</h2>
+    <ul>
+      <li><a href="pages/accessible-name-utils-test.html">Accessible name utils test</a></li>
+      <li><a href="pages/aria-utils-test.html">ARIA utils test</a></li>
+      <li><a href="pages/banner-test-broken.html">Banner component tests - broken implementation</a></li>
+      <li><a href="pages/banner-test.html">Banner component tests - correct implementation</a></li>
+      <li><a href="pages/img-utils-test.html">Image utils test</a></li>
+      <li><a href="pages/interaction-utils-test.html">Interaction utils test</a></li>
+      <li><a href="pages/link-test.html">Link test</a></li>
+      <li><a href="pages/reforge-test.html">Reforge test</a></li>
+      <li><a href="pages/structure-utils-test.html">Structure utils test</a></li>
+    </ul>
+    <h2>GitHub's test pages</h2>
+    <ul>
+      <li><a href="docs/index.html">Docs home test page</a></li>
+      <li><a href="docs/aria.html">ARIA test page</a></li>
+      <li><a href="docs/color.html">Color test page</a></li>
+      <li><a href="docs/forms.html">Forms test page</a></li>
+      <li><a href="docs/images.html">Images test page</a></li>
+      <li><a href="docs/motion.html">Motion test page</a></li>
+      <li><a href="docs/navigation.html">Navigation test page</a></li>
+    </ul>
+  </nav>
+</body>
+</html>

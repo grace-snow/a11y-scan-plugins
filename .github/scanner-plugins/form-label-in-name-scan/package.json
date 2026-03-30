@@ -1,0 +1,6 @@
+{
+  "name": "form-label-in-name-scan",
+  "description": "Validates that form controls with label elements follow WCAG 2.5.3 Label in Name by ensuring label text is included in accessible names",
+  "type": "module",
+  "version": "1.0.0"
+}

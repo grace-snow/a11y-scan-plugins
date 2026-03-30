@@ -1,0 +1,6 @@
+{
+  "name": "banner-scan",
+  "version": "1.0.0",
+  "description": "Validates GitHub Banner components follow accessibility patterns including section landmarks with accessible names and decorative icons marked with aria-hidden.",
+  "type": "module"
+}

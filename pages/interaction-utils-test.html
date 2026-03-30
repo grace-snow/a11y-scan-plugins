@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="menu" aria-expanded="false">Menu</button>
+  
+  <button id="incorrect-value" aria-expanded="incorrect">Menu</button>
+
+  <button>
+    <a href="#">Menu</a>
+  </button>
+
+  <footer>
+    <a href="/pages">Back to home</a>
+  </footer>
+
+  <script>
+    const menuButton = document.getElementById('menu');
+    menuButton.addEventListener('click', () => {
+      const expanded = menuButton.getAttribute('aria-expanded');
+      if (expanded === "true") {
+        menuButton.setAttribute('aria-expanded', "false");
+      } else {
+        menuButton.setAttribute('aria-expanded', "true");
+      }
+    });
+  </script>
+</body>
+</html>

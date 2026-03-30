@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!-- ⚠️ INTENTIONAL FAILURE: missing lang attribute -->
+<html>
+<head>
+  <title>Create Account — NovaTech</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .form-section { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:1.75rem; margin-bottom:1.5rem; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+    .form-section-title { font-size:1rem; font-weight:700; margin-bottom:1.25rem; padding-bottom:0.75rem; border-bottom:1px solid #e2e8f0; color:#0f172a; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media (max-width:560px) { .two-col { grid-template-columns:1fr; } }
+    .req-note { font-size:0.8rem; color:#64748b; margin-bottom:1rem; }
+    .btn-primary { background:#1a56db; color:#fff; border:none; padding:0.65rem 2rem; border-radius:6px; font-size:1rem; font-weight:600; cursor:pointer; }
+    .btn-secondary { background:#fff; color:#0f172a; border:1px solid #cbd5e1; padding:0.65rem 2rem; border-radius:6px; font-size:1rem; font-weight:600; cursor:pointer; margin-right:0.5rem; }
+    .error-text { color:red; font-size:0.875rem; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="site-logo">Nova<span>Tech</span></a>
+    <nav>
+      <ul class="header-nav">
+        <li><a href="forms.html">Forms</a></li>
+        <li><a href="images.html">Images</a></li>
+        <li><a href="navigation.html">Navigation</a></li>
+        <li><a href="color.html">Color</a></li>
+        <li><a href="motion.html">Motion</a></li>
+        <li><a href="aria.html">ARIA</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-title-bar">
+    <h1>Create Your Account</h1>
+    <p>Join 10,000+ teams using NovaTech's enterprise platform.</p>
+  </div>
+
+  <main class="page-wrapper">
+    <a href="index.html" class="back-link">← Back to index</a>
+
+    <form novalidate>
+
+      <div class="form-section">
+        <p class="form-section-title">Personal Information</p>
+        <p class="req-note">All fields are required unless noted.</p>
+
+        <div class="two-col">
+          <!-- ⚠️ INTENTIONAL FAILURE: input with no associated <label> element -->
+          <div>
+            <input type="text" placeholder="First name" style="width:100%;padding:0.55rem 0.75rem;border:1px solid #cbd5e1;border-radius:6px;font-size:0.9rem;" />
+          </div>
+          <div class="a11y-note" style="margin:0; align-self:center;">
+            <span class="label">❌ Issue: Input Has No Label</span>
+            <p>The "First name" field has no <code>&lt;label&gt;</code> element. The <code>placeholder</code> disappears as soon as the user starts typing and is never read by all screen readers. <strong>Fix:</strong> add <code>&lt;label for="first-name"&gt;First name&lt;/label&gt;</code> linked to the input via <code>id="first-name"</code>.</p>
+          </div>
+        </div>
+
+        <div class="two-col" style="margin-top:1rem;">
+          <div>
+            <!-- ⚠️ INTENTIONAL FAILURE: label is not programmatically associated (no for/id) -->
+            <label style="display:block;font-size:0.875rem;font-weight:600;margin-bottom:0.3rem;">Last name</label>
+            <input type="text" style="width:100%;padding:0.55rem 0.75rem;border:1px solid #cbd5e1;border-radius:6px;font-size:0.9rem;" />
+          </div>
+          <div class="a11y-note" style="margin:0; align-self:center;">
+            <span class="label">❌ Issue: Label Not Programmatically Associated</span>
+            <p>The label "Last name" has no <code>for</code> attribute, and the input has no <code>id</code>. Visually it looks correct, but screen readers cannot pair them. Clicking the label also won't focus the input. <strong>Fix:</strong> add <code>for="last-name"</code> to the label and <code>id="last-name"</code> to the input.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <p class="form-section-title">Contact Details</p>
+
+        <!-- ⚠️ INTENTIONAL FAILURE: missing autocomplete attribute on name/contact fields -->
+        <div class="form-row">
+          <label for="email">Email address</label>
+          <input type="text" id="email" />
+        </div>
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Missing autocomplete Attribute</span>
+          <p>The email field uses <code>type="text"</code> instead of <code>type="email"</code> and has no <code>autocomplete</code> attribute. WCAG 1.3.5 requires <code>autocomplete</code> on inputs that collect personal data so browsers and assistive technologies can auto-fill them. <strong>Fix:</strong> add <code>type="email" autocomplete="email"</code>.</p>
+        </div>
+
+        <!-- ⚠️ INTENTIONAL FAILURE: required field with no indication to the user -->
+        <div class="form-row">
+          <label for="phone">Phone number</label>
+          <input type="tel" id="phone" />
+        </div>
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Required Field Not Indicated</span>
+          <p>This phone number field is required for form submission but shows no visual or programmatic indication of that requirement. Users who skip it will only find out after submitting. <strong>Fix:</strong> add a visible asterisk and/or the word "required," plus <code>required</code> and <code>aria-required="true"</code> on the input.</p>
+        </div>
+
+        <!-- ⚠️ INTENTIONAL FAILURE: select with no label -->
+        <select style="width:100%;padding:0.55rem 0.75rem;border:1px solid #cbd5e1;border-radius:6px;font-size:0.9rem;margin-bottom:0.5rem;">
+          <option value="">Select your country</option>
+          <option value="us">United States</option>
+          <option value="ca">Canada</option>
+          <option value="uk">United Kingdom</option>
+          <option value="au">Australia</option>
+        </select>
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Select Has No Label</span>
+          <p>This dropdown has no associated <code>&lt;label&gt;</code>. When a screen reader focuses it, all it can announce is the first selected option ("Select your country"). Users don't know what kind of information they're selecting. <strong>Fix:</strong> add a linked <code>&lt;label for="country"&gt;Country&lt;/label&gt;</code> and <code>id="country"</code> on the select.</p>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <p class="form-section-title">Your Message</p>
+
+        <!-- ⚠️ INTENTIONAL FAILURE: textarea with no label -->
+        <textarea rows="5" placeholder="Tell us about your use case..." style="width:100%;padding:0.55rem 0.75rem;border:1px solid #cbd5e1;border-radius:6px;font-size:0.9rem;font-family:inherit;"></textarea>
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Textarea Has No Label</span>
+          <p>The message textarea relies only on a <code>placeholder</code> for identification. Placeholders are not a replacement for labels: they disappear on input, have lower contrast, and are not consistently announced by all assistive technologies. <strong>Fix:</strong> add <code>&lt;label for="message"&gt;Message&lt;/label&gt;</code>.</p>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <!-- ⚠️ INTENTIONAL FAILURE: error message not associated with the input -->
+        <p class="form-section-title">Zip / Postal Code</p>
+        <p class="error-text">This field is required.</p>
+        <input type="text" id="zip" style="width:100%;padding:0.55rem 0.75rem;border:1px solid red;border-radius:6px;font-size:0.9rem;" />
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Error Message Not Associated with Input</span>
+          <p>The "This field is required" error message appears above the input but has no programmatic link to it. Screen readers won't announce the error when the user focuses the field. <strong>Fix:</strong> add <code>aria-describedby="zip-error"</code> to the input and <code>id="zip-error"</code> to the error message, plus <code>role="alert"</code> or <code>aria-live="polite"</code> on the error.</p>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <!-- ⚠️ INTENTIONAL FAILURE: checkbox group with no fieldset/legend -->
+        <p class="form-section-title">I'm interested in (select all that apply)</p>
+        <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:0.5rem;">
+          <label><input type="checkbox" id="cb1" /> Cloud Infrastructure</label>
+          <label><input type="checkbox" id="cb2" /> Data Analytics</label>
+          <label><input type="checkbox" id="cb3" /> Security Suite</label>
+          <label><input type="checkbox" id="cb4" /> Developer APIs</label>
+        </div>
+        <div class="a11y-note">
+          <span class="label">❌ Issue: Checkbox Group Missing fieldset / legend</span>
+          <p>These related checkboxes are not wrapped in a <code>&lt;fieldset&gt;</code> with a <code>&lt;legend&gt;</code>. Screen readers need the group context to understand that all checkboxes relate to "I'm interested in." Without it, each checkbox sounds independent. <strong>Fix:</strong> wrap with <code>&lt;fieldset&gt;&lt;legend&gt;I'm interested in&lt;/legend&gt;…&lt;/fieldset&gt;</code>.</p>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+        <button type="button" class="btn-secondary">Cancel</button>
+
+        <!-- ⚠️ INTENTIONAL FAILURE: button with no accessible name -->
+        <button type="button" style="background:#1a56db;border:none;padding:0.65rem 2rem;border-radius:6px;cursor:pointer;"></button>
+        <div class="a11y-note" style="flex:1; margin:0;">
+          <span class="label">❌ Issue: Button Has No Accessible Name</span>
+          <p>The blue "Submit" button above has no text content, no <code>aria-label</code>, and no <code>title</code>. Screen readers will announce it as simply "button" with no context about what it does. <strong>Fix:</strong> add visible text ("Submit"), or <code>aria-label="Submit registration form"</code>.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:1.25rem; display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+        <!-- ⚠️ INTENTIONAL FAILURE: submit input with empty value attribute -->
+        <input type="submit" value="" style="background:#1a56db;color:#fff;border:none;padding:0.65rem 2rem;border-radius:6px;font-size:1rem;cursor:pointer;" />
+        <div class="a11y-note" style="flex:1; margin:0;">
+          <span class="label">❌ Issue: Submit Input Has Empty Value</span>
+          <p>This <code>&lt;input type="submit"&gt;</code> has <code>value=""</code>, making the button appear blank. Screen readers announce the <code>value</code> as the button's name — an empty value leaves users without any description of what the button does. <strong>Fix:</strong> set a descriptive value such as <code>value="Create Account"</code>.</p>
+        </div>
+      </div>
+
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 NovaTech · <a href="index.html">Home</a> · <a href="https://www.w3.org/WAI/WCAG22/quickref/" target="_blank" rel="noopener">WCAG 2.2 Reference</a></p>
+    <p style="margin-top:0.4rem; font-size:0.8rem;">These pages are intentionally inaccessible — for accessibility testing purposes only.</p>
+  </footer>
+
+</body>
+</html>

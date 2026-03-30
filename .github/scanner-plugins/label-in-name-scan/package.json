@@ -1,0 +1,6 @@
+{
+  "name": "label-in-name-scan",
+  "version": "1.0.0",
+  "description": "Validates that interactive elements with visible text follow WCAG 2.5.3 Label in Name by ensuring visible text is included in accessible names",
+  "type": "module"
+}

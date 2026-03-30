@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!-- ⚠️ INTENTIONAL A11Y FAILURES: missing lang attribute -->
+<html>
+<head>
+  <!-- ⚠️ INTENTIONAL FAILURE: no <title> element -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ⚠️ INTENTIONAL FAILURE: low-contrast link color (#aaa on white = ~2.3:1, needs 4.5:1) */
+    a { color: #aaa; }
+
+    .hero { background: linear-gradient(135deg, #1e3a8a 0%, #1a56db 100%); color: #fff; padding: 4rem 2rem; text-align: center; }
+    .hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; color: #fff; }
+    .hero p { font-size: 1.1rem; opacity: 0.9; max-width: 520px; margin: 0 auto 1.75rem; }
+    .hero-btn { display: inline-block; background: #fff; color: #1a56db; padding: 0.75rem 2rem; border-radius: 6px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .service-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; }
+    .service-card h3 { color: #0f172a; margin-bottom: 0.5rem; font-size: 1rem; }
+    .service-card p { font-size: 0.875rem; color: #64748b; margin-bottom: 0.75rem; }
+    .news-item { display: flex; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid #e2e8f0; }
+    .news-item img { width: 100px; height: 70px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+    .news-meta { font-size: 0.8rem; color: #64748b; margin-bottom: 0.25rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Page-level issue summary banner -->
+  <div class="a11y-banner">
+    <span class="label">⚠ Multiple Page-Level Issues</span>
+    This page has several intentional accessibility failures:
+    <strong>missing <code>lang</code> attribute</strong> on <code>&lt;html&gt;</code> (screen readers can't detect language),
+    <strong>no <code>&lt;title&gt;</code> element</strong> (browser tab and bookmarks are unnamed),
+    <strong>navigation not in a <code>&lt;nav&gt;</code> landmark</strong>,
+    <strong>heading hierarchy skips from h1 to h3</strong>, and
+    <strong>all links use low-contrast color #aaa</strong> (~2.3:1 ratio, fails WCAG 1.4.3).
+  </div>
+
+  <!-- ⚠️ INTENTIONAL FAILURE: navigation not wrapped in <nav> element -->
+  <div class="site-header">
+    <a href="index.html" class="site-logo">Nova<span>Tech</span></a>
+    <!-- ⚠️ INTENTIONAL FAILURE: list of links using <div> instead of <ul> inside a <nav> -->
+    <div style="display:flex; gap:1.25rem; font-size:0.9rem; font-weight:500;">
+      <a href="forms.html">Forms</a>
+      <a href="images.html">Images</a>
+      <a href="navigation.html">Navigation</a>
+      <a href="color.html">Color</a>
+      <a href="motion.html">Motion</a>
+      <a href="aria.html">ARIA</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <!-- ⚠️ INTENTIONAL FAILURE: heading hierarchy skips h2 — goes directly h1 → h3 below -->
+    <h1>Enterprise Solutions for Modern Teams</h1>
+    <p>NovaTech delivers cloud infrastructure, data analytics, and security tools trusted by 10,000+ businesses worldwide.</p>
+    <a href="#services" class="hero-btn">Explore Our Services</a>
+  </div>
+
+  <div class="page-wrapper">
+
+    <!-- ⚠️ INTENTIONAL FAILURE: heading hierarchy skips h2 — next heading after h1 should be h2, not h3 -->
+    <h3 id="services" style="font-size:1.4rem; font-weight:700; margin-bottom:1rem;">Our Services</h3>
+    <div class="a11y-note">
+      <span class="label">❌ Issue: Heading Hierarchy Skips Level</span>
+      <p>The page uses <code>&lt;h1&gt;</code> then immediately jumps to <code>&lt;h3&gt;</code>, skipping <code>&lt;h2&gt;</code>. Screen reader users navigate pages by headings — skipping levels creates a confusing outline. <strong>Fix:</strong> use <code>&lt;h2&gt;</code> for this section heading.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="service-card">
+        <div style="font-size:1.75rem; margin-bottom:0.5rem;">☁️</div>
+        <h3>Cloud Infrastructure</h3>
+        <p>Scalable, reliable hosting for businesses of all sizes.</p>
+        <a href="#">Learn more</a>
+      </div>
+      <div class="service-card">
+        <div style="font-size:1.75rem; margin-bottom:0.5rem;">📊</div>
+        <h3>Data Analytics</h3>
+        <p>Turn raw data into actionable business insights.</p>
+        <a href="#">Learn more</a>
+      </div>
+      <div class="service-card">
+        <div style="font-size:1.75rem; margin-bottom:0.5rem;">🔒</div>
+        <h3>Security Suite</h3>
+        <p>Enterprise-grade protection for your data and users.</p>
+        <a href="#">Learn more</a>
+      </div>
+    </div>
+
+    <div class="a11y-note">
+      <span class="label">❌ Issue: Low-Contrast Link Color</span>
+      <p>All links on this page use <code>color: #aaa</code> on a white background. That gives a contrast ratio of approximately <strong>2.3:1</strong>, far below the WCAG AA requirement of <strong>4.5:1</strong> for normal-sized text. Users with low vision cannot reliably read these links. <strong>Fix:</strong> use a darker color such as <code>#767676</code> or <code>#0060df</code>.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:1rem;">Latest News</h3>
+
+    <!-- ⚠️ INTENTIONAL FAILURE: image with no alt attribute -->
+    <div class="news-item">
+      <img src="https://picsum.photos/seed/acme-news1/200/140" />
+      <div>
+        <p class="news-meta">March 10, 2025 · Product Update</p>
+        <p style="font-weight:600; font-size:0.95rem;">NovaTech launches new AI-powered analytics dashboard</p>
+        <p style="font-size:0.875rem; color:#64748b;">Our latest release brings real-time data visualization and predictive modeling to all plans.</p>
+        <a href="#" style="font-size:0.875rem;">Read full article</a>
+      </div>
+    </div>
+    <div class="a11y-note">
+      <span class="label">❌ Issue: Missing Alt Attribute on Image</span>
+      <p>The news thumbnail above has <strong>no <code>alt</code> attribute</strong> at all. A missing <code>alt</code> is different from an empty one — assistive technologies will often read out the image file path or URL as a substitute, which is meaningless. <strong>Fix:</strong> add a brief description, e.g. <code>alt="Abstract blue chart graphic"</code>, or <code>alt=""</code> if the image is decorative.</p>
+    </div>
+
+    <div class="news-item">
+      <img src="https://picsum.photos/seed/acme-news2/200/140" alt="" />
+      <div>
+        <p class="news-meta">February 28, 2025 · Company News</p>
+        <p style="font-weight:600; font-size:0.95rem;">NovaTech named a leader in the 2025 Cloud Security Report</p>
+        <p style="font-size:0.875rem; color:#64748b;">Independent analysts recognized our security suite for its zero-trust architecture.</p>
+        <a href="#" style="font-size:0.875rem;">Read full article</a>
+      </div>
+    </div>
+
+    <div class="a11y-note">
+      <span class="label">❌ Issue: Navigation Not in a &lt;nav&gt; Landmark</span>
+      <p>The top navigation links are wrapped in a plain <code>&lt;div&gt;</code> rather than a <code>&lt;nav&gt;</code> element. Screen reader users use landmark navigation to jump directly to the main navigation area of a page. Without a <code>&lt;nav&gt;</code> element, that shortcut doesn't work. <strong>Fix:</strong> wrap the links in <code>&lt;nav aria-label="Main"&gt;</code>.</p>
+    </div>
+
+    <p style="font-size:0.8rem; color:#64748b; border-top:1px solid #e2e8f0; padding-top:1rem; margin-top:1rem;">
+      ⚠️ These pages are intentionally inaccessible. Do not use them as production templates.
+    </p>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2025 NovaTech · <a href="index.html">Home</a> · <a href="https://www.w3.org/WAI/WCAG22/quickref/" target="_blank" rel="noopener">WCAG 2.2 Reference</a></p>
+    <p style="margin-top:0.4rem; font-size:0.8rem;">These pages are intentionally inaccessible — for accessibility testing purposes only.</p>
+  </footer>
+
+</body>
+</html>
