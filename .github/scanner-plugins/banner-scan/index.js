@@ -20,7 +20,7 @@ export default async function bannerScan({ page, addFinding } = {}) {
     const banners = await page.evaluate((bannerSelectors) => {
       const elements = Array.from(document.querySelectorAll(bannerSelectors));
 
-      return elements.map((banner) => {
+      return elements.map((banner, index) => {
         const tagName = banner.tagName.toLowerCase();
         const testId = banner.getAttribute("data-testid");
         const roleAttr = banner.getAttribute("role");
@@ -50,6 +50,7 @@ export default async function bannerScan({ page, addFinding } = {}) {
         }
 
         return {
+          index,
           selector: selectorStr,
           tagName,
           roleAttr,
@@ -63,7 +64,33 @@ export default async function bannerScan({ page, addFinding } = {}) {
 
     console.log(`[banner-scan] Found ${banners.length} banner(s) on ${url}`);
 
-    // Check each banner for violations
+    // First pass: identify which elements have violations so they can all be
+    // highlighted in the DOM before findings are filed. If include_screenshots
+    // is enabled, the full-page screenshot will capture the highlights.
+    const violationIndexes = new Set();
+    for (const banner of banners) {
+      if (banner.computedRole !== "region") violationIndexes.add(banner.index);
+      if (banner.computedRole === "region" && !banner.accessibleName)
+        violationIndexes.add(banner.index);
+      if (banner.hasSvg && banner.svgAriaHidden !== "true") violationIndexes.add(banner.index);
+    }
+
+    if (violationIndexes.size > 0) {
+      await page.evaluate(
+        ({ sel, indexes }) => {
+          const elements = Array.from(document.querySelectorAll(sel));
+          for (const idx of indexes) {
+            if (elements[idx]) {
+              elements[idx].style.outline = "3px solid red";
+              elements[idx].style.outlineOffset = "2px";
+            }
+          }
+        },
+        { sel: selector, indexes: Array.from(violationIndexes) },
+      );
+    }
+
+    // Second pass: file findings
     for (const banner of banners) {
       console.log(`[banner-scan] Checking banner: ${banner.selector}`);
 
@@ -72,11 +99,14 @@ export default async function bannerScan({ page, addFinding } = {}) {
         console.log(`[banner-scan] VIOLATION: Missing landmark role on ${banner.selector}`);
         await addFinding({
           scannerType: "banner-scan",
+          ruleId: "primer_banner-landmark-role",
+          wcagCriterion: "1.3.1",
           url,
           problemShort: `Banner must be a <section> element or have role="region"`,
+
           problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html",
           solutionShort: 'Use <section> element (implicit role) or add explicit role="region"',
-          solutionLong: `The banner element <${banner.tagName}>${banner.roleAttr ? ` with role="${banner.roleAttr}"` : ""} does not have the correct landmark role. Banner components must use a <section> element (which has an implicit role="region") or have an explicit role="region" attribute to be properly exposed as section landmarks for screen reader users.`,
+          solutionLong: `The banner element <${banner.tagName}>${banner.roleAttr ? ` with role="${banner.roleAttr}"` : ""} does not have the correct landmark role. Banner components must use a <section> element (which has an implicit role="region") or have an explicit role="region" attribute to be properly exposed as section landmarks for screen reader users.\n\n**Scanned page:** [${url}](${url})`,
         });
       }
 
@@ -85,11 +115,14 @@ export default async function bannerScan({ page, addFinding } = {}) {
         console.log(`[banner-scan] VIOLATION: Missing accessible name on ${banner.selector}`);
         await addFinding({
           scannerType: "banner-scan",
+          ruleId: "banner-accessible-name",
+          wcagCriterion: "1.3.1",
           url,
           problemShort: "Banner section landmark missing accessible name",
+
           problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html",
           solutionShort: "Add aria-label or aria-labelledby to provide context",
-          solutionLong: `The banner element ${banner.selector} is a section landmark, but does not have an accessible name. Section landmarks (role="region") require aria-label or aria-labelledby to provide context about the banner type (e.g., "Critical alert", "Info notification") for screen reader users.`,
+          solutionLong: `The banner element ${banner.selector} is a section landmark, but does not have an accessible name. Section landmarks (role="region") require aria-label or aria-labelledby to provide context about the banner type (e.g., "Critical alert", "Info notification") for screen reader users.\n\n**Scanned page:** [${url}](${url})`,
         });
       }
 
@@ -98,11 +131,14 @@ export default async function bannerScan({ page, addFinding } = {}) {
         console.log(`[banner-scan] VIOLATION: SVG icon missing aria-hidden on ${banner.selector}`);
         await addFinding({
           scannerType: "banner-scan",
+          ruleId: "primer_banner-icon-aria-hidden",
+          wcagCriterion: "1.1.1",
           url,
           problemShort: 'Banner icon must be marked as decorative with aria-hidden="true"',
+
           problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/non-text-content.html",
           solutionShort: 'Add aria-hidden="true" to the SVG icon element',
-          solutionLong: `The banner ${banner.selector} contains an SVG icon without aria-hidden="true". Banner type indicator icons are decorative because the banner type is conveyed through the accessible name and heading. Exposing the icon to screen readers creates redundant announcements. Add aria-hidden="true" to the SVG to hide it from assistive technologies. This relates to WCAG 2.1 Success Criteria 1.1.1 (Non-text Content) and 4.1.2 (Name, Role, Value).`,
+          solutionLong: `The banner ${banner.selector} contains an SVG icon without aria-hidden="true". Banner type indicator icons are decorative because the banner type is conveyed through the accessible name and heading. Exposing the icon to screen readers creates redundant announcements. Add aria-hidden="true" to the SVG to hide it from assistive technologies. This relates to WCAG 2.1 Success Criteria 1.1.1 (Non-text Content) and 4.1.2 (Name, Role, Value).\n\n**Scanned page:** [${url}](${url})`,
         });
       }
     }

@@ -35,7 +35,7 @@ jobs:
 
           # OPTIONAL — set these to exercise more Action inputs
           skip_copilot_assignment: true
-          include_screenshots: false
+          include_screenshots: true
           open_grouped_issues: true
           reduced_motion: no-preference
           color_scheme: light
