@@ -31,7 +31,7 @@ jobs:
             https://grace-snow.github.io/a11y-scan-plugins/pages/banner-test.html
           repository: grace-snow/a11y-scan-plugins
           token: ${{ secrets.A11Y_SCAN }}
-          cache_key: cached_results-primer.style-main.json
+          cache_key: cached_results-primer.style-main_30-03-26.json
 
           # OPTIONAL — set these to exercise more Action inputs
           skip_copilot_assignment: true
