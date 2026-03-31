@@ -1,4 +1,4 @@
-name: Accessibility Issue Screenshots
+name: A11y issue screenshots
 
 on:
   issues:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   capture_accessibility_issue_screenshot:
-    if: contains(github.event.issue.title, 'Accessibility issue:')
+    if: contains(github.event.issue.title, 'A11y:')
     runs-on: ubuntu-latest
     env:
       SCREENSHOT_BRANCH: issue-screenshots

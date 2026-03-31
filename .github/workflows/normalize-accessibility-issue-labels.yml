@@ -1,0 +1,117 @@
+name: Normalize a11y issue labels
+
+on:
+  issues:
+    types:
+      - opened
+      - reopened
+      - edited
+      - labeled
+
+permissions:
+  issues: write
+
+jobs:
+  normalize_labels:
+    if: startsWith(github.event.issue.title, 'A11y:')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Normalize scanner labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.issue.number;
+            const issue = context.payload.issue;
+
+            const currentLabels = (issue.labels || []).map((l) => l.name);
+            const keep = new Set(currentLabels);
+            const remove = new Set();
+            const add = new Set(["a11y-scan"]);
+
+            const body = issue.body || "";
+
+            // 1) Remove noisy scanner-state labels.
+            for (const name of currentLabels) {
+              if (/^[a-z0-9-]+-scan-scanning-issue$/i.test(name)) {
+                remove.add(name);
+              }
+            }
+
+            // 2) Rewrite long scanner rule labels to short rule labels.
+            // Example: banner-scan rule: banner-accessible-name -> rule: banner_accessible-name
+            for (const name of currentLabels) {
+              const match = name.match(/^([a-z0-9-]+)-scan\s+rule:\s+(.+)$/i);
+              if (!match) continue;
+
+              const scannerBase = match[1].toLowerCase();
+              const rawRule = match[2].trim();
+
+              let shortRule = rawRule;
+              if (rawRule.startsWith(`${scannerBase}-`)) {
+                shortRule = `${scannerBase}_${rawRule.slice(scannerBase.length + 1)}`;
+              }
+
+              add.add(`rule: ${shortRule}`);
+              remove.add(name);
+            }
+
+            // 3) Add WCAG-{criterion} labels from issue text when present.
+            const wcagMatches = Array.from(body.matchAll(/\b([1-4]\.\d\.\d{1,2})\b/g));
+            for (const m of wcagMatches) {
+              add.add(`WCAG-${m[1]}`);
+            }
+
+            // 4) Add a11y-primer for component/Primer requirements.
+            if (/Primer accessibility requirement/i.test(body) || /\bbanner-scan\b|\bnav-list-scan\b/i.test(body)) {
+              add.add("a11y-primer");
+            }
+
+            // Build target label set while preserving unrelated labels.
+            for (const label of remove) {
+              keep.delete(label);
+            }
+            for (const label of add) {
+              keep.add(label);
+            }
+
+            const targetLabels = Array.from(keep);
+
+            // If no changes, skip API update.
+            const sameLength = targetLabels.length === currentLabels.length;
+            const sameSet = sameLength && currentLabels.every((name) => keep.has(name));
+            if (sameSet) {
+              core.info("Labels already normalized; nothing to change.");
+              return;
+            }
+
+            // Ensure any new labels exist in the repository before setting labels.
+            async function ensureLabelExists(name) {
+              try {
+                await github.rest.issues.getLabel({ owner, repo, name });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name,
+                  color: "0e8a16",
+                  description: "Auto-generated accessibility scan label",
+                });
+              }
+            }
+
+            const newlyAdded = Array.from(add).filter((name) => !currentLabels.includes(name));
+            for (const name of newlyAdded) {
+              await ensureLabelExists(name);
+            }
+
+            await github.rest.issues.setLabels({
+              owner,
+              repo,
+              issue_number,
+              labels: targetLabels,
+            });
+
+            core.info(`Updated labels for issue #${issue_number}`);

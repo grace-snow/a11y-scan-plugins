@@ -162,7 +162,7 @@ async function main() {
   }
 
   const target = parseTargetHint(issueTitle, issueBody);
-  const findingSlug = slugify(issueTitle.replace(/^Accessibility issue:\s*/i, ""));
+  const findingSlug = slugify(issueTitle.replace(/^A11y:\s*/i, ""));
 
   const localPath = path.join(".tmp", "screenshots", issueNumber, `${findingSlug}.png`);
   const relativePath = path.posix.join("screenshots", issueNumber, `${findingSlug}.png`);
