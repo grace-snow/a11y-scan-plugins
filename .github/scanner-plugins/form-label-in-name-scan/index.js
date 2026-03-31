@@ -106,7 +106,7 @@ export default async function formLabelInNameScan({ page, addFinding } = {}) {
       selectorList.forEach((selector) => {
         const elements = document.querySelectorAll(selector);
 
-        elements.forEach((element) => {
+        elements.forEach((element, index) => {
           // Find associated label text (the visible label)
           const labelText = findLabelText(element);
 
@@ -132,6 +132,7 @@ export default async function formLabelInNameScan({ page, addFinding } = {}) {
             const elementDesc = element.tagName.toLowerCase();
             const typeAttr = element.getAttribute("type");
             const roleAttr = element.getAttribute("role");
+            const testId = element.getAttribute("data-testid");
 
             let elementType = elementDesc;
             if (typeAttr) {
@@ -140,11 +141,20 @@ export default async function formLabelInNameScan({ page, addFinding } = {}) {
               elementType = `${elementDesc}[role="${roleAttr}"]`;
             }
 
+            const targetSelector = element.id
+              ? `#${element.id}`
+              : testId
+                ? `[data-testid="${testId}"]`
+                : elementType;
+
             findings.push({
               elementType,
               labelText,
               accessibleName,
               elementId: element.id || "(no id)",
+              selector,
+              selectorIndex: index,
+              targetSelector,
               outerHTML: element.outerHTML.substring(0, 200), // Truncate for readability
             });
           }
@@ -162,7 +172,7 @@ export default async function formLabelInNameScan({ page, addFinding } = {}) {
         problemShort: `Form label text "${violation.labelText}" not included in accessible name "${violation.accessibleName}"`,
         problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/label-in-name.html",
         solutionShort: "Ensure the form control's accessible name includes the label text",
-        solutionLong: `The ${violation.elementType} form control (id="${violation.elementId}") has a <label> with text "${violation.labelText}" but its accessible name is "${violation.accessibleName}". WCAG 2.5.3 Label in Name (Level A) requires that when form controls have a visible text label, the accessible name must include that label text. This ensures that voice control users can activate the form control by speaking the visible label. If using aria-label or aria-labelledby, ensure it includes "${violation.labelText}". Ideally, the label text should be at the start of the accessible name for best compatibility with voice control software like Apple Voice Control.`,
+        solutionLong: `The ${violation.elementType} form control (id="${violation.elementId}") has a <label> with text "${violation.labelText}" but its accessible name is "${violation.accessibleName}". WCAG 2.5.3 Label in Name (Level A) requires that when form controls have a visible text label, the accessible name must include that label text. This ensures that voice control users can activate the form control by speaking the visible label. If using aria-label or aria-labelledby, ensure it includes "${violation.labelText}". Ideally, the label text should be at the start of the accessible name for best compatibility with voice control software like Apple Voice Control.\n\nTARGET_SELECTOR: \`${violation.selector}\`\nTARGET_INDEX: ${violation.selectorIndex}`,
       });
     }
   } catch (e) {

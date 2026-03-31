@@ -92,13 +92,22 @@ export default async function labelInNameScan({ page, addFinding } = {}) {
           if (!normalisedAccessible.includes(normalisedVisible)) {
             const elementDesc = element.tagName.toLowerCase();
             const roleAttr = element.getAttribute("role");
+            const elementId = element.getAttribute("id");
+            const testId = element.getAttribute("data-testid");
             const elementType = roleAttr ? `${elementDesc}[role="${roleAttr}"]` : elementDesc;
+            const targetSelector = elementId
+              ? `#${elementId}`
+              : testId
+                ? `[data-testid="${testId}"]`
+                : elementType;
 
             findings.push({
               elementType,
               visibleText,
               accessibleName,
               selector: selector,
+              selectorIndex: index,
+              targetSelector,
               outerHTML: element.outerHTML.substring(0, 200), // Truncate for readability
             });
           }
@@ -116,7 +125,7 @@ export default async function labelInNameScan({ page, addFinding } = {}) {
         problemShort: `Visible text "${violation.visibleText}" not included in accessible name "${violation.accessibleName}"`,
         problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/label-in-name.html",
         solutionShort: "Ensure the accessible name includes the visible text label",
-        solutionLong: `The ${violation.elementType} element has visible text "${violation.visibleText}" but its accessible name is "${violation.accessibleName}". WCAG 2.5.3 Label in Name (Level A) requires that when interactive elements have a visible text label, the accessible name must include that visible text. This ensures that voice control users can activate controls by speaking the visible label. Update the element's accessible name (via aria-label, aria-labelledby, or element content) to include "${violation.visibleText}". Ideally, the visible text should be at the start of the accessible name for best compatibility with voice control software.`,
+        solutionLong: `The ${violation.elementType} element has visible text "${violation.visibleText}" but its accessible name is "${violation.accessibleName}". WCAG 2.5.3 Label in Name (Level A) requires that when interactive elements have a visible text label, the accessible name must include that visible text. This ensures that voice control users can activate controls by speaking the visible label. Update the element's accessible name (via aria-label, aria-labelledby, or element content) to include "${violation.visibleText}". Ideally, the visible text should be at the start of the accessible name for best compatibility with voice control software.\n\nTARGET_SELECTOR: \`${violation.selector}\`\nTARGET_INDEX: ${violation.selectorIndex}`,
       });
     }
   } catch (e) {
