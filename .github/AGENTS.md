@@ -3,47 +3,47 @@ name: accessibility-findings-labeler
 description: "Process accessibility scan findings and automatically add relevant labels based on scanner type (banner-scan, form-label-in-name-scan, etc.) and WCAG success criterion"
 ---
 
-# Accessibility Findings Labeler
+# Accessibility findings labeler
 
 This agent processes GitHub issues created from accessibility scanner plugin findings and automatically applies relevant labels.
 
-## Label Mapping Strategy
+## Label mapping strategy
 
 When processing issues from custom accessibility scanners:
 
-### Scanner-Specific Labels
-- **banner-scan** → `area: banner`, `component: banner`
+### Scanner-specific labels
+- **banner-scan** → `component: banner`
 - **form-label-in-name-scan** → `area: forms`, `wcag: label-in-name`
 - **label-in-name-scan** → `wcag: label-in-name`, `interactive-elements`
 - **nav-list-scan** → `area: navigation`, `wcag: info-and-relationships`
 - **axe-core** → add existing axe rule ID labels
 
-### WCAG Success Criterion Labels
+### WCAG Success Criterion labels
 Extract WCAG criteria from issue body/links and add:
 
 | Criterion | Label(s) |
 |-----------|----------|
-| 1.1.1 Non-text Content | `wcag: non-text-content` |
-| 1.3.1 Info and Relationships | `wcag: info-and-relationships` |
-| 1.4.x Distinguishable | `wcag: distinguishable` |
-| 2.1.x Keyboard | `wcag: keyboard` |
-| 2.4.7 Focus Visible | `wcag: focus-visible` |
-| 2.5.3 Label in Name | `wcag: label-in-name` |
-| 3.2.x Predictable | `wcag: predictable` |
-| 3.3.x Input Assistance | `wcag: input-assistance` |
-| 4.1.2 Name, Role, Value | `wcag: name-role-value` |
-| 4.1.3 Status Messages | `wcag: status-messages` |
+| 1.1.1 Non-text Content | `WCAG-1.1.1` |
+| 1.3.1 Info and Relationships | `WCAG-1.3.1` |
+| 1.4.x Distinguishable | `WCAG-1.4.x` |
+| 2.1.x Keyboard | `WCAG-2.1.x` |
+| 2.4.7 Focus Visible | `WCAG-2.4.7` |
+| 2.5.3 Label in Name | `WCAG-2.5.3` |
+| 3.2.x Predictable | `WCAG-3.2.x` |
+| 3.3.x Input Assistance | `WCAG-3.3.x` |
+| 4.1.2 Name, Role, Value | `WCAG-4.1.2` |
+| 4.1.3 Status Messages | `WCAG-4.1.3` |
 
-### Conformance Level Labels
-- All custom scanner findings → `wcag: level-a` (unless explicitly AA/AAA)
+### Conformance level labels
+- All custom scanner findings → Add label for WCAG level e.g. `WCAG-A` and `WCAG-AA
 - Axe-core violations → check violation `impact` field
 
-### Additional Labels
-- `accessibility` — all findings
+### Additional labels
+- `a11y` — all findings
 - `bug` — when marking as issue (not documentation)
 - Severity indicators: `severity: high`, `severity: medium`, `severity: low`
 
-## Processing Rules
+## Processing rules
 
 1. **Extract Scanner Type**: Look for `scannerType` or repository folder naming (e.g., `banner-scan`, `form-label-in-name-scan`)
 2. **Parse WCAG Criterion**: 
@@ -53,9 +53,9 @@ Extract WCAG criteria from issue body/links and add:
 3. **Determine Severity**: Based on WCAG level and criterion impact
 4. **Apply All Relevant Labels**: (scanner + component + wcag + level + accessibility)
 
-## Example Issue Processing
+## Example issue processing
 
-**Input Issue from banner-scan violation:**
+**Input issue from banner-scan violation:**
 ```
 Title: Banner must be a <section> element or have role="region"
 
@@ -66,20 +66,19 @@ Scanner: banner-scan
 ...
 ```
 
-**Output Labels:**
-- `accessibility`
-- `area: banner`
+**Output labels:**
+- `a11y`
 - `component: banner`
-- `wcag: info-and-relationships`
-- `wcag: level-a`
+- `WCAG-1.3.1`
+- `WCAG-a`
 
 ---
 
 **Note**: This agent should run after issues are created by the accessibility scanner action and before marking them as ready for triage.
 
-## Scanner Finding Format
+## Scanner finding format
 
-To ensure consistent labeling and issue formatting, all custom scanners should include these fields in their `addFinding()` calls:
+To ensure consistent labelling and issue formatting, all custom scanners should include these fields in their `addFinding()` calls:
 
 ```javascript
 await addFinding({
