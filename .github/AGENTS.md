@@ -1,9 +1,9 @@
 ---
 name: accessibility-findings-labeler
-description: "Process accessibility scan findings and automatically add relevant labels based on scanner type (banner-scan, form-label-in-name-scan, etc.) and WCAG success criterion"
+description: "Process accessibility scan findings and automatically add relevant labels to identify as an a11y issue, include scanner type (banner-scan, form-label-in-name-scan, etc.), plus WCAG success criterion number and WCAG level"
 ---
 
-# Accessibility findings labeler
+# Accessibility findings labeller
 
 This agent processes GitHub issues created from accessibility scanner plugin findings and automatically applies relevant labels.
 
@@ -12,10 +12,10 @@ This agent processes GitHub issues created from accessibility scanner plugin fin
 When processing issues from custom accessibility scanners:
 
 ### Scanner-specific labels
-- **banner-scan** → `component: banner`
-- **form-label-in-name-scan** → `area: forms`, `wcag: label-in-name`
-- **label-in-name-scan** → `wcag: label-in-name`, `interactive-elements`
-- **nav-list-scan** → `area: navigation`, `wcag: info-and-relationships`
+- **banner-scan** → `scan: banner`
+- **form-label-in-name-scan** → `scan: form-label-in-name`, `wcag-2.5.3`, `wcag-A`
+- **label-in-name-scan** → `wcag-2.5.3`, `wcag-A`,
+- **nav-list-scan** → `scan: nav-list`
 - **axe-core** → add existing axe rule ID labels
 
 ### WCAG Success Criterion labels
@@ -40,8 +40,6 @@ Extract WCAG criteria from issue body/links and add:
 
 ### Additional labels
 - `a11y` — all findings
-- `bug` — when marking as issue (not documentation)
-- Severity indicators: `severity: high`, `severity: medium`, `severity: low`
 
 ## Processing rules
 
@@ -50,8 +48,7 @@ Extract WCAG criteria from issue body/links and add:
    - Check if finding includes `wcagCriterion` field (e.g., `"1.3.1"`)
    - Fallback to checking issue body for WCAG links like `https://www.w3.org/WAI/WCAG21/Understanding/...`
    - Extract criterion number from URL or field (e.g., `info-and-relationships` → `1.3.1`)
-3. **Determine Severity**: Based on WCAG level and criterion impact
-4. **Apply All Relevant Labels**: (scanner + component + wcag + level + accessibility)
+3. **Apply All Relevant Labels**: (scanner + wcag criterion + wcag level + a11y)
 
 ## Example issue processing
 
@@ -68,7 +65,7 @@ Scanner: banner-scan
 
 **Output labels:**
 - `a11y`
-- `component: banner`
+- `scan: banner`
 - `WCAG-1.3.1`
 - `WCAG-a`
 
