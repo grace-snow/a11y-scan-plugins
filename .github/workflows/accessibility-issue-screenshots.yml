@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   capture_accessibility_issue_screenshot:
-    if: contains(github.event.issue.title, 'A11y:')
+    if: startsWith(github.event.issue.title, 'Accessibility issue:')
     runs-on: ubuntu-latest
     env:
       SCREENSHOT_BRANCH: issue-screenshots

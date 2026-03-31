@@ -117,7 +117,7 @@ export default async function bannerScan({ page, addFinding } = {}) {
           ruleId: "primer_banner-landmark-role",
           wcagCriterion: "1.3.1",
           url,
-          problemShort: `Banner must be a &lt;section&gt; element or have role="region"`,
+          problemShort: `Banner must be a section element or have role="region"`,
           problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html",
           solutionShort:
             'Use &lt;section&gt; element (implicit role) or add explicit role="region"',
