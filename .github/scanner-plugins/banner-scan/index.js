@@ -117,11 +117,11 @@ export default async function bannerScan({ page, addFinding } = {}) {
           ruleId: "primer_banner-landmark-role",
           wcagCriterion: "1.3.1",
           url,
-          problemShort: `Banner must be a <section> element or have role="region"`,
-
+          problemShort: `Banner must be a &lt;section&gt; element or have role="region"`,
           problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html",
-          solutionShort: 'Use <section> element (implicit role) or add explicit role="region"',
-          solutionLong: `The banner element <${banner.tagName}>${banner.roleAttr ? ` with role="${banner.roleAttr}"` : ""} does not have the correct landmark role. Banner components must use a <section> element (which has an implicit role="region") or have an explicit role="region" attribute to be properly exposed as section landmarks for screen reader users.\n\nTARGET_SELECTOR: \`${selector}\`\nTARGET_INDEX: ${banner.index}\n\n**Scanned page:** [${url}](${url})`,
+          solutionShort:
+            'Use &lt;section&gt; element (implicit role) or add explicit role="region"',
+          solutionLong: `Primer accessibility requirement: The banner element &lt;${banner.tagName}&gt;${banner.roleAttr ? ` with role="${banner.roleAttr}"` : ""} does not have the correct landmark role. Banner components must use a &lt;section&gt; element (which has an implicit role="region") or have an explicit role="region" attribute to be properly exposed as section landmarks for screen reader users.\n\nTARGET_SELECTOR: \`${selector}\`\nTARGET_INDEX: ${banner.index}\n\n**Scanned page:** [${url}](${url})`,
         });
       }
 
@@ -137,7 +137,7 @@ export default async function bannerScan({ page, addFinding } = {}) {
 
           problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html",
           solutionShort: "Add aria-label or aria-labelledby to provide context",
-          solutionLong: `The banner element ${banner.selector} is a section landmark, but does not have an accessible name. Section landmarks (role="region") require aria-label or aria-labelledby to provide context about the banner type (e.g., "Critical alert", "Info notification") for screen reader users.\n\nTARGET_SELECTOR: \`${selector}\`\nTARGET_INDEX: ${banner.index}\n\n**Scanned page:** [${url}](${url})`,
+          solutionLong: `Primer accessibility requirement: The banner element ${banner.selector} is a section landmark, but does not have an accessible name. Section landmarks (&lt;section&gt; elements or role="region") require aria-label or aria-labelledby to provide context about the banner type (e.g., "Critical alert", "Info notification") for screen reader users.\n\nTARGET_SELECTOR: \`${selector}\`\nTARGET_INDEX: ${banner.index}\n\n**Scanned page:** [${url}](${url})`,
         });
       }
 
@@ -150,10 +150,9 @@ export default async function bannerScan({ page, addFinding } = {}) {
           wcagCriterion: "1.1.1",
           url,
           problemShort: 'Banner icon must be marked as decorative with aria-hidden="true"',
-
           problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/non-text-content.html",
           solutionShort: 'Add aria-hidden="true" to the SVG icon element',
-          solutionLong: `The banner ${banner.selector} contains an SVG icon without aria-hidden="true". Banner type indicator icons are decorative because the banner type is conveyed through the accessible name and heading. Exposing the icon to screen readers creates redundant announcements. Add aria-hidden="true" to the SVG to hide it from assistive technologies. This relates to WCAG 2.1 Success Criteria 1.1.1 (Non-text Content) and 4.1.2 (Name, Role, Value).\n\nTARGET_SELECTOR: \`${selector}\`\nTARGET_INDEX: ${banner.index}\nTARGET_SELECTOR_MODE: svg\n\n**Scanned page:** [${url}](${url})`,
+          solutionLong: `Primer accessibility requirement: The banner ${banner.selector} contains an SVG icon without aria-hidden="true". Banner type indicator icons are decorative because the banner type is conveyed through the accessible name and heading. Exposing the icon to screen readers creates redundant announcements. Add aria-hidden="true" to the SVG to hide it from assistive technologies. This relates to WCAG 2.1 Success Criteria 1.1.1 (Non-text Content) and 4.1.2 (Name, Role, Value).\n\nTARGET_SELECTOR: \`${selector}\`\nTARGET_INDEX: ${banner.index}\nTARGET_SELECTOR_MODE: svg\n\n**Scanned page:** [${url}](${url})`,
         });
       }
     }
