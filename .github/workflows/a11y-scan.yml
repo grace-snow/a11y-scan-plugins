@@ -18,17 +18,17 @@ jobs:
           # https://grace-snow.github.io/a11y-scan-plugins/docs/color.html
           # https://grace-snow.github.io/a11y-scan-plugins/docs/motion.html
           # https://grace-snow.github.io/a11y-scan-plugins/docs/aria.html
-          # https://grace-snow.github.io/a11y-scan-plugins/pages/index.html
-          # https://grace-snow.github.io/a11y-scan-plugins/pages/accessible-name-utils-test.html
-          # https://grace-snow.github.io/a11y-scan-plugins/pages/aria-utils-test.html
-          # https://grace-snow.github.io/a11y-scan-plugins/pages/img-utils-test.html
-          # https://grace-snow.github.io/a11y-scan-plugins/pages/interaction-utils-test.html
-          # https://grace-snow.github.io/a11y-scan-plugins/pages/link-test.html
-          # https://grace-snow.github.io/a11y-scan-plugins/pages/reforge-test.html
-          # https://grace-snow.github.io/a11y-scan-plugins/pages/structure-utils-test.html
           urls: |
             https://grace-snow.github.io/a11y-scan-plugins/pages/banner-test-broken.html
             https://grace-snow.github.io/a11y-scan-plugins/pages/banner-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/index.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/accessible-name-utils-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/aria-utils-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/img-utils-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/interaction-utils-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/link-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/reforge-test.html
+            https://grace-snow.github.io/a11y-scan-plugins/pages/structure-utils-test.html
           repository: grace-snow/a11y-scan-plugins
           token: ${{ secrets.A11Y_SCAN }}
           cache_key: cached_results-primer.style-main_51b0d2d2-1c86-451f-8123-2f1209fdd8eb.json
@@ -39,7 +39,7 @@ jobs:
           open_grouped_issues: false
           reduced_motion: no-preference
           color_scheme: light
-          scans: '["banner-scan"]'
+          scans: '["banner-scan", "form-label-in-name-scan", "label-in-name-scan", "nav-list-scan", "reflow-scan"]'
 
           # OPTIONAL AUTH INPUTS (use only if your demo pages require login)
           # login_url: https://example.com/login
