@@ -10,7 +10,6 @@
 
 export default async function bannerScan({ page, addFinding } = {}) {
   const url = page.url();
-  console.log("[banner-scan] Starting scan on:", url);
 
   // Find all Banner components (production: <banner>, test: [data-testid="banner"])
   const selector = 'banner, [data-testid="banner"]';
@@ -62,8 +61,6 @@ export default async function bannerScan({ page, addFinding } = {}) {
       });
     }, selector);
 
-    console.log(`[banner-scan] Found ${banners.length} banner(s) on ${url}`);
-
     // First pass: identify exactly which DOM nodes to highlight so screenshots
     // point to the specific failing target (e.g. the offending SVG icon).
     const bannerViolationIndexes = new Set();
@@ -107,11 +104,8 @@ export default async function bannerScan({ page, addFinding } = {}) {
 
     // Second pass: file findings
     for (const banner of banners) {
-      console.log(`[banner-scan] Checking banner: ${banner.selector}`);
-
       // Check 1: Must be a section landmark (role="region" or <section>)
       if (banner.computedRole !== "region") {
-        console.log(`[banner-scan] VIOLATION: Missing landmark role on ${banner.selector}`);
         await addFinding({
           scannerType: "banner-scan",
           ruleId: "primer_banner-landmark-role",
@@ -127,7 +121,6 @@ export default async function bannerScan({ page, addFinding } = {}) {
 
       // Check 2: Section landmark must have accessible name
       if (banner.computedRole === "region" && !banner.accessibleName) {
-        console.log(`[banner-scan] VIOLATION: Missing accessible name on ${banner.selector}`);
         await addFinding({
           scannerType: "banner-scan",
           ruleId: "banner-accessible-name",
@@ -143,7 +136,6 @@ export default async function bannerScan({ page, addFinding } = {}) {
 
       // Check 3: Decorative icons must have aria-hidden='true'
       if (banner.hasSvg && banner.svgAriaHidden !== "true") {
-        console.log(`[banner-scan] VIOLATION: SVG icon missing aria-hidden on ${banner.selector}`);
         await addFinding({
           scannerType: "banner-scan",
           ruleId: "primer_banner-icon-aria-hidden",
@@ -156,7 +148,6 @@ export default async function bannerScan({ page, addFinding } = {}) {
         });
       }
     }
-    console.log(`[banner-scan] Scan complete for ${url}`);
   } catch (e) {
     console.error("Error scanning banner components:", e);
   }
