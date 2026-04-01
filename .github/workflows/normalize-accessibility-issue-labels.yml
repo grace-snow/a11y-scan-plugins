@@ -1,6 +1,12 @@
 name: Normalize a11y issue labels
 
 on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Issue number to normalize labels for"
+        required: true
+        type: string
   issues:
     types:
       - opened
@@ -13,7 +19,7 @@ permissions:
 
 jobs:
   normalize_labels:
-    if: startsWith(github.event.issue.title, 'Accessibility issue:')
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'issues' && startsWith(github.event.issue.title, 'Accessibility issue:'))
     runs-on: ubuntu-latest
     steps:
       - name: Normalize scanner labels
@@ -22,8 +28,27 @@ jobs:
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const issue_number = context.payload.issue.number;
-            const issue = context.payload.issue;
+
+            let issue_number;
+            let issue;
+
+            if (context.eventName === "workflow_dispatch") {
+              issue_number = Number.parseInt(context.payload.inputs?.issue_number || "", 10);
+              if (!Number.isInteger(issue_number) || issue_number <= 0) {
+                throw new Error("Invalid issue_number input. Provide a positive integer.");
+              }
+
+              const response = await github.rest.issues.get({ owner, repo, issue_number });
+              issue = response.data;
+            } else {
+              issue_number = context.payload.issue.number;
+              issue = context.payload.issue;
+            }
+
+            if (!issue.title?.startsWith("Accessibility issue:")) {
+              core.info(`Issue #${issue_number} is not an accessibility scan issue; skipping.`);
+              return;
+            }
 
             const currentLabels = (issue.labels || []).map((l) => l.name);
             const keep = new Set(currentLabels);
