@@ -33,10 +33,12 @@ jobs:
             const body = issue.body || "";
             const title = issue.title || "";
 
-            // 1) Remove noisy scanner-state labels.
+            // 1) Replace [name]-scan-scanning-issue with [name]-scanning-issue.
             for (const name of currentLabels) {
-              if (/^[a-z0-9-]+-scan-scanning-issue$/i.test(name)) {
+              const scanMatch = name.match(/^([a-z0-9-]+)-scan-scanning-issue$/i);
+              if (scanMatch) {
                 remove.add(name);
+                add.add(`${scanMatch[1]}-scanning-issue`); // e.g. "label-in-name-scanning-issue"
               }
             }
 

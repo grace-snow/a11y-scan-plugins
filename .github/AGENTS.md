@@ -12,10 +12,10 @@ This agent processes GitHub issues created from accessibility scanner plugin fin
 When processing issues from custom accessibility scanners:
 
 ### Scanner-specific labels
-- **banner-scan** → `scan: banner`
-- **form-label-in-name-scan** → `scan: form-label-in-name`, `wcag-2.5.3`, `wcag-A`
-- **label-in-name-scan** → `wcag-2.5.3`, `wcag-A`,
-- **nav-list-scan** → `scan: nav-list`
+- **banner-scan** → `banner-scanning-issue`
+- **form-label-in-name-scan** → `form-label-in-name-scanning-issue`
+- **label-in-name-scan** → `label-in-name-scanning-issue`
+- **nav-list-scan** → `nav-list-scanning-issue`
 - **axe-core** → add existing axe rule ID labels
 
 ### WCAG Success Criterion labels
