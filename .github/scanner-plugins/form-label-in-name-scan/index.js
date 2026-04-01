@@ -169,7 +169,7 @@ export default async function formLabelInNameScan({ page, addFinding } = {}) {
       await addFinding({
         scannerType: "form-label-in-name-scan",
         url,
-        problemShort: `Form label text "${violation.labelText}" not included in accessible name "${violation.accessibleName}"`,
+        problemShort: `Form label text not included in accessible name`,
         problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/label-in-name.html",
         solutionShort: "Ensure the form control's accessible name includes the label text",
         solutionLong: `The ${violation.elementType} form control (id="${violation.elementId}") has a <label> with text "${violation.labelText}" but its accessible name is "${violation.accessibleName}". WCAG 2.5.3 Label in Name (Level A) requires that when form controls have a visible text label, the accessible name must include that label text. This ensures that voice control users can activate the form control by speaking the visible label. If using aria-label or aria-labelledby, ensure it includes "${violation.labelText}". Ideally, the label text should be at the start of the accessible name for best compatibility with voice control software like Apple Voice Control.\n\nTARGET_SELECTOR: \`${violation.selector}\`\nTARGET_INDEX: ${violation.selectorIndex}`,

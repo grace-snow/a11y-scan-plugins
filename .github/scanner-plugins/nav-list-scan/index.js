@@ -57,10 +57,10 @@ export default async function navListScan({ page, addFinding } = {}) {
         await addFinding({
           scannerType: "nav-list-scan",
           url,
-          problemShort: `NavList must be a <nav> element or have role="navigation"`,
+          problemShort: `NavList must be a nav element or have role="navigation"`,
           problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html",
-          solutionShort: 'Use <nav> element (implicit role) or add explicit role="navigation"',
-          solutionLong: `The navigation list element <${navList.tagName}>${navList.roleAttr ? ` with role="${navList.roleAttr}"` : ""} does not have the correct landmark role. Navigation lists must use a <nav> element (which has an implicit role="navigation") or have an explicit role="navigation" attribute to be properly exposed as navigation landmarks for screen reader users. This allows users to quickly find and navigate to the navigation section. This violates WCAG 2.1 Success Criterion 1.3.1 (Info and Relationships).\n\nTARGET_SELECTOR: \`${selector}\`\nTARGET_INDEX: ${navList.index}`,
+          solutionShort: 'Use &lt;nav&gt; element (implicit role) or add explicit role="navigation"',
+          solutionLong: `The navigation list element &lt;${navList.tagName}&gt;${navList.roleAttr ? ` with role="${navList.roleAttr}"` : ""} does not have the correct landmark role. Navigation lists must use a &lt;nav&gt; element (which has an implicit role="navigation") or have an explicit role="navigation" attribute to be properly exposed as navigation landmarks for screen reader users. This allows users to quickly find and navigate to the navigation section. This violates WCAG 2.1 Success Criterion 1.3.1 (Info and Relationships).\n\nTARGET_SELECTOR: \`${selector}\`\nTARGET_INDEX: ${navList.index}`,
         });
       }
 
