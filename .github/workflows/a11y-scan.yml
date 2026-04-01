@@ -34,7 +34,7 @@ jobs:
           cache_key: cached_results-primer.style-main_51b0d2d2-1c86-451f-8123-2f1209fdd8eb.json
 
           # OPTIONAL — set these to exercise more Action inputs
-          skip_copilot_assignment: true
+          skip_copilot_assignment: false
           include_screenshots: true
           open_grouped_issues: false
           reduced_motion: no-preference
