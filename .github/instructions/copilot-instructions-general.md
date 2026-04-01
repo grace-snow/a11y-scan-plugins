@@ -18,7 +18,6 @@ When answering accessibility questions, rely on reputable sources and, when poss
 - W3C / WAI: https://www.w3.org/
 - WebAIM: https://webaim.org/
 - MDN Web Docs: https://developer.mozilla.org/
-- IBM Equal Access: https://www.ibm.com/able/
 - ARIA Authoring Practices Guide (APG): https://www.w3.org/WAI/ARIA/apg/
 
 ---
