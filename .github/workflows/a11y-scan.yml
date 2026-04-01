@@ -38,6 +38,7 @@ jobs:
           reduced_motion: no-preference
           color_scheme: light
           scans: '["banner-scan", "form-label-in-name-scan", "label-in-name-scan", "nav-list-scan", "reflow-scan"]'
+
           # OPTIONAL AUTH INPUTS (use only if your demo pages require login)
           # login_url: https://example.com/login
           # username: demo-user
