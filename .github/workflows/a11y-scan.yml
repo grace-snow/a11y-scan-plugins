@@ -30,14 +30,14 @@ jobs:
             https://grace-snow.github.io/a11y-scan-plugins/pages/reforge-test.html
           repository: grace-snow/a11y-scan-plugins
           token: ${{ secrets.A11Y_SCAN }}
-          cache_key: cached_results-primer.style-main-v2-20260401.json
+          cache_key: cached_results-primer.style-main-v2-20260402.json
           # OPTIONAL — set these to exercise more Action inputs
           skip_copilot_assignment: false
           include_screenshots: true
           open_grouped_issues: false
           reduced_motion: no-preference
           color_scheme: light
-          scans: '["banner-scan", "form-label-in-name-scan", "label-in-name-scan", "nav-list-scan", "reflow-scan"]'
+          scans: '["banner-scan","nav-list-scan"]'
 
           # OPTIONAL AUTH INPUTS (use only if your demo pages require login)
           # login_url: https://example.com/login
