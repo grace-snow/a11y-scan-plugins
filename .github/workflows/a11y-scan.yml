@@ -37,7 +37,7 @@ jobs:
           open_grouped_issues: false
           reduced_motion: no-preference
           color_scheme: light
-          scans: '["banner-scan","nav-list-scan"]'
+          scans: '["banner-scan","nav-list-scan","label-in-name-scan","form-label-in-name-scan"]'
 
           # OPTIONAL AUTH INPUTS (use only if your demo pages require login)
           # login_url: https://example.com/login

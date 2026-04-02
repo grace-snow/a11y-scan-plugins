@@ -29,103 +29,91 @@ export default async function labelInNameScan({ page, addFinding } = {}) {
     '[role="menuitemradio"]',
   ];
 
+  const normaliseText = (text) => text.toLowerCase().replace(/\s+/g, " ").trim();
+
+  const getAccessibleNameForLocator = async (elementLocator) => {
+    try {
+      const snapshot = await elementLocator.ariaSnapshot();
+
+      const firstNodeLine = snapshot
+        .split("\n")
+        .map((line) => line.trim())
+        .find((line) => line.startsWith("- "));
+
+      const calculatedAccessibleName = firstNodeLine?.match(/"([^"]*)"/)?.[1]?.trim() || "";
+
+      return normaliseText(calculatedAccessibleName);
+    } catch (e) {
+      return "";
+    }
+  };
+
   try {
-    const violations = await page.evaluate((selectorList) => {
-      const findings = [];
+    const violations = [];
 
-      // Helper to normalise text for comparison
-      const normaliseText = (text) => text.toLowerCase().replace(/\s+/g, " ").trim();
+    for (const selector of selectors) {
+      const elementCount = await page.locator(selector).count();
 
-      // Helper to get accessible name from element
-      const getAccessibleName = (element) => {
-        // Try aria-label first
-        if (element.hasAttribute("aria-label")) {
-          return element.getAttribute("aria-label");
-        }
+      for (let index = 0; index < elementCount; index++) {
+        const locator = page.locator(selector).nth(index);
 
-        // Try aria-labelledby
-        if (element.hasAttribute("aria-labelledby")) {
-          const ids = element.getAttribute("aria-labelledby").split(/\s+/);
-          const labelTexts = ids
-            .map((id) => document.getElementById(id)?.textContent?.trim())
-            .filter(Boolean);
-          if (labelTexts.length > 0) {
-            return labelTexts.join(" ");
-          }
-        }
-
-        // Try title attribute
-        if (element.hasAttribute("title")) {
-          return element.getAttribute("title");
-        }
-
-        // For buttons, use innerText as fallback
-        // For links, this is often the accessible name too
-        return element.innerText?.trim() || "";
-      };
-
-      selectorList.forEach((selector) => {
-        const elements = document.querySelectorAll(selector);
-
-        elements.forEach((element, index) => {
-          // Get visible text (what the user sees)
+        const elementData = await locator.evaluate((element) => {
           const visibleText = element.innerText?.trim() || "";
+          const elementDesc = element.tagName.toLowerCase();
+          const roleAttr = element.getAttribute("role");
+          const elementId = element.getAttribute("id");
+          const testId = element.getAttribute("data-testid");
+          const elementType = roleAttr ? `${elementDesc}[role="${roleAttr}"]` : elementDesc;
+          const targetSelector = elementId
+            ? `#${elementId}`
+            : testId
+              ? `[data-testid="${testId}"]`
+              : elementType;
 
-          // Skip if no visible text (likely icon-only)
-          if (!visibleText) {
-            return;
-          }
-
-          // Get accessible name (what screen readers announce)
-          const accessibleName = getAccessibleName(element);
-
-          // Skip if no accessible name (will be caught by other checks)
-          if (!accessibleName) {
-            return;
-          }
-
-          // Normalise both for comparison
-          const normalisedVisible = normaliseText(visibleText);
-          const normalisedAccessible = normaliseText(accessibleName);
-
-          // Check if visible text is included in accessible name (WCAG 2.5.3 requirement)
-          if (!normalisedAccessible.includes(normalisedVisible)) {
-            const elementDesc = element.tagName.toLowerCase();
-            const roleAttr = element.getAttribute("role");
-            const elementId = element.getAttribute("id");
-            const testId = element.getAttribute("data-testid");
-            const elementType = roleAttr ? `${elementDesc}[role="${roleAttr}"]` : elementDesc;
-            const targetSelector = elementId
-              ? `#${elementId}`
-              : testId
-                ? `[data-testid="${testId}"]`
-                : elementType;
-
-            findings.push({
-              elementType,
-              visibleText,
-              accessibleName,
-              selector: selector,
-              selectorIndex: index,
-              targetSelector,
-              outerHTML: element.outerHTML.substring(0, 200), // Truncate for readability
-            });
-          }
+          return {
+            visibleText,
+            elementType,
+            targetSelector,
+            outerHTML: element.outerHTML.substring(0, 200),
+          };
         });
-      });
 
-      return findings;
-    }, selectors);
+        if (!elementData.visibleText) {
+          continue;
+        }
+
+        const normalisedVisible = normaliseText(elementData.visibleText);
+        const normalisedAccessible = await getAccessibleNameForLocator(locator);
+
+        if (!normalisedAccessible) {
+          continue;
+        }
+
+        if (!normalisedAccessible.includes(normalisedVisible)) {
+          violations.push({
+            elementType: elementData.elementType,
+            visibleText: elementData.visibleText,
+            accessibleName: normalisedAccessible,
+            selector,
+            selectorIndex: index,
+            targetSelector: elementData.targetSelector,
+            outerHTML: elementData.outerHTML,
+          });
+        }
+      }
+    }
 
     // Report each violation
     for (const violation of violations) {
       await addFinding({
         scannerType: "label-in-name-scan",
+        ruleId: "label-in-name-visible-text-match",
+        wcagCriterion: "2.5.3",
         url,
         problemShort: `Visible text not included in accessible name`,
         problemUrl: "https://www.w3.org/WAI/WCAG21/Understanding/label-in-name.html",
         solutionShort: "Ensure the accessible name includes the visible text label",
-        solutionLong: `The ${violation.elementType} element has visible text "${violation.visibleText}" but its accessible name is "${violation.accessibleName}". WCAG 2.5.3 Label in Name (Level A) requires that when interactive elements have a visible text label, the accessible name must include that visible text. This ensures that voice control users can activate controls by speaking the visible label. Update the element's accessible name (via aria-label, aria-labelledby, or element content) to include "${violation.visibleText}". Ideally, the visible text should be at the start of the accessible name for best compatibility with voice control software.\n\nTARGET_SELECTOR: \`${violation.selector}\`\nTARGET_INDEX: ${violation.selectorIndex}`,
+        solutionLong: `The ${violation.elementType} element has visible text "${violation.visibleText}" but its accessible name is "${violation.accessibleName}". WCAG 2.5.3 Label in Name (Level A) requires that when interactive elements have a visible text label, the accessible name must include that visible text. This ensures that voice control users can activate controls by speaking the visible label. Update the element's accessible name (via aria-label, aria-labelledby, or element content) to include "${violation.visibleText}". Ideally, the visible text should be at the start of the accessible name for best compatibility with voice control software.\n\nTARGET_SELECTOR: \`${violation.selector}\`\nTARGET_INDEX: ${violation.selectorIndex}\n\n**Scanned page:** [${url}](${url})`,
       });
     }
   } catch (e) {
