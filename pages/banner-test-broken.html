@@ -131,21 +131,18 @@
   <h1>Banner component tests - Broken implementation</h1>
   <p>This page contains <strong>intentionally broken</strong> Banner components to verify that our accessibility tests will catch real issues.</p>
   
-  <!-- Missing landmark role -->
+  <!-- Correct landmark role -->
   <div class="banner-section">
-    <h2>Issue 1: Missing landmark role</h2>
-    <div class="error-description">
-      <strong>Should fail:</strong> Not using &lt;section role="region"&gt;
-    </div>
-    <div class="banner banner-critical" data-variant="critical" data-testid="banner">
+    <h2>Fixed: Correct landmark role</h2>
+    <section role="region" aria-label="Critical" class="banner banner-critical" data-variant="critical" data-testid="banner">
       <svg class="banner-icon" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M4.47.22A.749.749 0 0 1 5 0h6c.199 0 .389.079.53.22l4.25 4.25c.141.14.22.331.22.53v6a.749.749 0 0 1-.22.53l-4.25 4.25A.749.749 0 0 1 11 16H5a.749.749 0 0 1-.53-.22L.22 11.53A.749.749 0 0 1 0 11V5c0-.199.079-.389.22-.53Zm.84 1.28L1.5 5.31v5.38l3.81 3.81h5.38l3.81-3.81V5.31L10.69 1.5ZM8 4a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path>
       </svg>
       <div class="banner-content">
         <h2 class="banner-heading">Critical</h2>
-        <p class="banner-description">This banner is not a landmark region.</p>
+        <p class="banner-description">This banner now correctly uses a section landmark with role="region" and an accessible name.</p>
       </div>
-    </div>
+    </section>
   </div>
   
   <!-- Missing landmark accessible name -->
